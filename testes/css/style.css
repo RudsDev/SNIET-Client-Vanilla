@@ -1,0 +1,13 @@
+.box-name{
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    background-color: gray;
+}
+
+
+#container-pop-name{
+    width: 500px;
+    height: 300px;
+    border: 1px solid lightslategray;
+}
