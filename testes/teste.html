@@ -12,13 +12,21 @@
 
 	<form action="" method="get" onsubmit="especieController.add(event)">
 
+    <div id="container-pop-json">
+      <div id="adjust-container-pop"><div id="container-pop-name" class=""></div></div><br/>
+      <input type="button" id="gen-json-pop" value="Gerar JSON">        
+    </div>
+    
+    <br/><br/>
 
-    <div id="container-pop-name"></div>
-
-    <br/>
-
-	  Nome popular: <input type="text" id="pop-name"/>
-    <input type="button" id="add-pop-name" value="Add">
+    <div>
+      Nome popular: <input type="text" id="pop-name"/>
+      <select id="pop-name-country">
+        <option value="BR">Brasil</option>
+        <option value="Other">Outro</option>
+      </select>
+      <input type="button" id="add-pop-name" value="Add">
+    </div>
 
 	</form>
 
@@ -26,5 +34,5 @@
 
  <script src="js/add.js"></script>
  <link rel="stylesheet" href="css/style.css">
-
+ <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
 </html>
