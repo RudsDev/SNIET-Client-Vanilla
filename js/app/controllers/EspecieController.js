@@ -4,6 +4,8 @@ class EspecieController{
 
         let $ = document.querySelector.bind(document);
         
+        this._resourceUrl = 'http://localhost:8282/sniet_api/servlet/resource/';
+
         this._especieView = new EspecieView();
 
         this._cientificName = $('#name');
@@ -14,21 +16,15 @@ class EspecieController{
         this._bigSize = $('#big_size');
         this._puppySize =$('#puppy_size');   
 
-
-        //$('#div-dorso').appendChild(this._especieView.loadDorso());
+        this._loadData();
 
     }
 
     add(event){
         event.preventDefault();
         
-        /*Conn.conect('http://localhost:8282/sniet_api/servlet/especies/',
-        'POST', ToJson.generateJsonClean(this._createEspecie()),'application/json');*/
-
-        let resp = Conn.conect('http://localhost:8282/sniet_api/servlet/resource/'+'Dorso',
-        'GET', null,'text/plain');
-
-        console.log(resp);
+        Conn.conect('http://localhost:8282/sniet_api/servlet/especies/',
+        'POST', ToJson.generateJsonClean(this._createEspecie()),'application/json');
     }
 
     remove(){
@@ -39,7 +35,6 @@ class EspecieController{
         
     }
 
-
     _createEspecie(){
         return new Especie(undefined, this._cientificName.value,
         this._description.value, this._smallSize.value, 
@@ -48,8 +43,24 @@ class EspecieController{
     }
 
 
-    loadData(){
-        
+    _loadData(){
+        this._especieView.loadBarbatana
+            (JSON.parse(Conn.conect(this._resourceUrl+'Barbatana','GET', null,'text/plain')[2]));
+
+        this._especieView.loadDenticao
+            (JSON.parse(Conn.conect(this._resourceUrl+'Denticao','GET', null,'text/plain')[2]));
+
+        this._especieView.loadDorso
+            (JSON.parse(Conn.conect(this._resourceUrl+'Dorso','GET', null,'text/plain')[2]));
+
+        this._especieView.loadFocinho
+            (JSON.parse(Conn.conect(this._resourceUrl+'Focinho','GET', null,'text/plain')[2]));
+
+        this._especieView.loadReproducao
+            (JSON.parse(Conn.conect(this._resourceUrl+'Reproducao','GET', null,'text/plain')[2]));
+
+        this._especieView.loadVentre
+            (JSON.parse(Conn.conect(this._resourceUrl+'Ventre','GET', null,'text/plain')[2]));
     }
 
 }

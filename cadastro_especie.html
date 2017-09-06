@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
+  
 <head>
-
   <meta charset="UTF-8">
   <title>Cadastro Especie</title>
 </head>
@@ -13,19 +13,29 @@
 	<form action="" method="get" onsubmit="especieController.add(event)">
 	  Nome Cientifico: <input type="text" id="name"/><br/>
 
-    Em risco de extinção? 
+    <br/>Em risco de extinção? 
           <select id="extinct">
             <option value="S">Sim</option>
             <option value="N">Não</option>
           </select></br>
 
-    <div id="div-dorso"></div>
+    <br/>Dorso: <div id="div-dorso" style="display: inline-block"></div><br/>
 
-    Descricao: <textarea rows="3" cols="10" id="description"></textarea><br/> 
+    <br/>Focinho: <div id="div-focinho" style="display: inline-block"></div><br/>
 
-    Menor tamanho: <input type="text" id="small_size"/><br/>
-    Maior tamanho: <input type="text" id="big_size"/><br/>
-    Média de tamanho: <input type="text" id="mid_size"/><br/>
+    <br/>Ventre: <div id="div-ventre" style="display: inline-block"></div><br/>
+
+    <br/>Reprodução: <div id="div-reprod" style="display: inline-block"></div><br/>
+
+    <br/>Barbatana: <div id="div-barbatana" style="display: inline-block"></div><br/>
+
+    <br/>Dentição: <div id="div-denticao" style="display: inline-block"></div><br/>      
+
+    <br/>Descricao: <textarea rows="3" cols="10" id="description"></textarea><br/>
+
+    <br/>Menor tamanho: <input type="text" id="small_size"/><br/>
+    <br/>Maior tamanho: <input type="text" id="big_size"/><br/>
+    <br/>Média de tamanho: <input type="text" id="mid_size"/><br/>
  
     Tamanho filhote: <input type="text" id="puppy_size"/><br/>
 	  <br/><br/>
