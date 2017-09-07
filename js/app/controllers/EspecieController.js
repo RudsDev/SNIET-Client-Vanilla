@@ -16,15 +16,29 @@ class EspecieController{
         this._bigSize = $('#big_size');
         this._puppySize =$('#puppy_size');   
 
-        this._loadData();
 
+        this._selectDorso = $('#dorso-select');
+        this._selectFocinho = $('#focinho-select');
+        this._selectVentre = $('#ventre-select');
+        this._selectReprod = $('#reproducao-select');
+        this._selectBarbatana = $('#barbatana-select');
+        this._selectDenticao = $('#denticao-select');
+
+        //this._loadData();
+        this.load();
     }
 
     add(event){
         event.preventDefault();
         
-        Conn.conect('http://localhost:8282/sniet_api/servlet/especies/',
-        'POST', ToJson.generateJsonClean(this._createEspecie()),'application/json');
+        /*Conn.conect('http://localhost:8282/sniet_api/servlet/especies/',
+        'POST', ToJson.generateJsonClean(this._createEspecie()),'application/json');*/
+
+        //this.load();
+
+        let obj  = this._selectDorso.value;
+
+        console.log(obj);
     }
 
     remove(){
@@ -61,6 +75,11 @@ class EspecieController{
 
         this._especieView.loadVentre
             (JSON.parse(Conn.conect(this._resourceUrl+'Ventre','GET', null,'text/plain')[2]));
+    }
+
+    load(){
+        
+        JSON.parse(Conn.conect(this._resourceUrl+'Dorso','GET', null,'text/plain')[2]);
     }
 
 }

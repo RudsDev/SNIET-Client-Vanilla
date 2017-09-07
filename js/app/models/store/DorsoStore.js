@@ -2,7 +2,6 @@ class DorsoStore {
     
         constructor(){
             this._dorsos = [];
-            this._descCorDorso = descCorDorso;
         }
     
         
@@ -12,8 +11,9 @@ class DorsoStore {
 
 
         /*TODO Implementar verificação de listagem vazia/atualizada */
-        _loadDorsos(){
-            
+        loadDorsos(load){
+            this._dorsos = load();
         }
 
     }
+

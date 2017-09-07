@@ -2,74 +2,69 @@
 class EspecieView{
     
         constructor(element){
+            
             const $ = document.querySelector.bind(document);
 
-            this._divDorso = $('#div-dorso');
-            this._divFocinho = $('#div-focinho');
-            this._divVentre = $('#div-ventre');
-            this._divReprod = $('#div-reprod');
-            this._divBarbatana = $('#div-barbatana');
-            this._divDenticao = $('#div-denticao');
+            this._selectDorso = $('#dorso-select');
+            this._selectFocinho = $('#focinho-select');
+            this._selectVentre = $('#ventre-select');
+            this._selectReprod = $('#reproducao-select');
+            this._selectBarbatana = $('#barbatana-select');
+            this._selectDenticao = $('#denticao-select');
         }
 
 
         loadDorso(dorsos){
-            this._divDorso.innerHTML = `
-            <select id="dorsos-select">
-                ${dorsos.map(dorso=>{
-                    return `<option value="${dorso.descCorDorso}">${dorso.descCorDorso}</option>`
-                })}
-            </select>
-            `;
+            Util.appendHtml(this._selectDorso, 
+                dorsos.map(dorso=>{
+                    return `<option value="${dorso.idDorso}">${dorso.descCorDorso}</option>`
+                }),
+                'span'
+            )
         }
 
         loadFocinho(focinhos){
-            this._divFocinho.innerHTML = `
-            <select id="focinhos-select">
-                ${focinhos.map(focinho=>{
-                    return `<option value="${focinho.descFocinho}">${focinho.descFocinho}</option>`
-                })}
-            </select>
-            `;
+            Util.appendHtml(this._selectFocinho, 
+                focinhos.map(focinho=>{
+                    return `<option value="${focinho.idFocinho}">${focinho.descFocinho}</option>`
+                }),
+                'span'
+            )
         }
 
         loadVentre(ventres){
-            this._divVentre.innerHTML = `
-            <select id="ventres-select">
-                ${ventres.map(ventre=>{
-                    return `<option value="${ventre.descCorVentre}">${ventre.descCorVentre}</option>`
-                })}
-            </select>
-            `;
+            Util.appendHtml(this._selectVentre, 
+                ventres.map(ventre=>{
+                    return `<option value="${ventre.idVentre}">${ventre.descCorVentre}</option>`
+                }),
+                'span'
+            )
         }
 
         loadReproducao(reprods){
-            this._divReprod.innerHTML = `
-            <select id="reprods-select">
-                ${reprods.map(reprod=>{
-                    return `<option value="${reprod.tipoReproducao}">${reprod.tipoReproducao}</option>`
-                })}
-            </select>
-            `;
+            Util.appendHtml(this._selectReprod, 
+                reprods.map(reprod=>{
+                    return `<option value="${reprod.idReproducao}">${reprod.tipoReproducao}</option>`
+                }),
+                'span'
+            )
         }
 
         loadBarbatana(barbatanas){
-            this._divBarbatana.innerHTML = `
-            <select id="barbatanas-select">
-                ${barbatanas.map(barbatana=>{
-                    return `<option value="${barbatana.descCorBarbatana}">${barbatana.descCorBarbatana}</option>`
-                })}
-            </select>
-            `;
+            Util.appendHtml(this._selectBarbatana, 
+                barbatanas.map(barbatana=>{
+                    return `<option value="${barbatana.idBarbatana}">${barbatana.descCorBarbatana}</option>`
+                }),
+                'span'
+            )
         }
 
         loadDenticao(dentes){
-            this._divDenticao.innerHTML = `
-            <select id="denticao-select">
-                ${dentes.map(denticao=>{
-                    return `<option value="${denticao.caracDenticao}">${denticao.caracDenticao}</option>`
-                })}
-            </select>
-            `;
+            Util.appendHtml(this._selectDenticao, 
+                dentes.map(denticao=>{
+                    return `<option value="${denticao.idDenticao}">${denticao.caracDenticao}</option>`
+                }),
+                'span'
+            )
         }
     }

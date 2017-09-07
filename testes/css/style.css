@@ -37,3 +37,7 @@
 #pop-name-country{
     height: 26px;
 }
+
+select{
+    max-width: 200px;
+}
