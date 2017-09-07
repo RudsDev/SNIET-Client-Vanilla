@@ -1,0 +1,43 @@
+.box-name{
+    height: 20px;
+    text-align: center;
+    background-color: lightblue;
+    margin: 2px 2px;
+    float: left;
+}
+
+.close-box-name{
+    color: red;
+    font-weight: 600;
+    margin: 0px 5px 0px 0px;
+    cursor: pointer;
+}
+
+
+#container-pop-name{
+    width: 380px;
+    min-height: 50px;
+    height: fit-content;
+    border: 1px solid lightslategray;
+    padding: 2px;
+}
+
+#container-pop-json{
+    width: fit-content;
+}
+
+#gen-json-pop{
+    float: right;
+}
+
+#adjust-container-pop{
+    display: inline-flex;
+}
+
+#pop-name-country{
+    height: 26px;
+}
+
+select{
+    max-width: 200px;
+}
