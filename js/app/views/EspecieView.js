@@ -1,97 +1,65 @@
-
 class EspecieView{
     
         constructor(element){
-            
-            const $ = document.querySelector.bind(document);
-
-            this._selectDorso = $('#dorso-select');
-            this._selectFocinho = $('#focinho-select');
-            this._selectVentre = $('#ventre-select');
-            this._selectReprod = $('#reproducao-select');
-            this._selectBarbatana = $('#barbatana-select');
-            this._selectDenticao = $('#denticao-select');
-            this._selectFocinhoLista = $('#focinho-select-lista');
-
-            this._effects();
+            this._resourceUrl = 'http://localhost:8282/sniet_api/servlet/resource/';
         }
 
 
-        loadDorso(dorsos){
-            Util.appendHtml(this._selectDorso, 
-                dorsos.map(dorso=>{
-                    return `<option value="${dorso.idDorso}">${dorso.descCorDorso}</option>`
-                }),
-                'span'
-            )
+        _effects(modelName){
+
+            let setas = document.querySelectorAll(`.glyphicon-triangle-bottom`);
+            let setasArr = Array.from(setas);
+
+            setasArr.map(seta=>{
+                seta.addEventListener('click', function (e) {
+                    let element = e.target;
+                    let tbody = element.parentNode.parentNode.querySelector('tbody');
+                    tbody.classList.toggle('invisible');
+                });
+            });
         }
 
-        loadFocinho(focinhos){
-            Util.appendHtml(this._selectFocinho, 
-                focinhos.map(focinho=>{
-                    return `<option value="${focinho.idFocinho}">${focinho.descFocinho}</option>`
-                }),
-                'span'
-            )
+        loadTables(modelsNames){
+            for (var modelName of modelsNames) {
+                let modelNameFirstUpper = modelName.replace(modelName.charAt(0),modelName.charAt(0).toUpperCase());
+                let list = JSON.parse(Conn.conect(this._resourceUrl+modelNameFirstUpper,'GET', null,'text/plain')[2]);
+                this._createSelects(modelName, document.querySelector(`#${modelName}-select-div`));
+                this._loadItens(document.querySelector(`#${modelName}-select-lista`), list);
+                this._pages(list);
+            }
         }
 
-        loadVentre(ventres){
-            Util.appendHtml(this._selectVentre, 
-                ventres.map(ventre=>{
-                    return `<option value="${ventre.idVentre}">${ventre.descCorVentre}</option>`
-                }),
-                'span'
-            )
-        }
 
-        loadReproducao(reprods){
-            Util.appendHtml(this._selectReprod, 
-                reprods.map(reprod=>{
-                    return `<option value="${reprod.idReproducao}">${reprod.tipoReproducao}</option>`
-                }),
-                'span'
-            )
-        }
-
-        loadBarbatana(barbatanas){
-            Util.appendHtml(this._selectBarbatana, 
-                barbatanas.map(barbatana=>{
-                    return `<option value="${barbatana.idBarbatana}">${barbatana.descCorBarbatana}</option>`
-                }),
-                'span'
-            )
-        }
-
-        loadDenticao(dentes){
-            Util.appendHtml(this._selectDenticao, 
-                dentes.map(denticao=>{
-                    return `<option value="${denticao.idDenticao}">${denticao.caracDenticao}</option>`
-                }),
-                'span'
-            )
-        }
-
-        loadFocinhoItens(focinhos){
-            Util.appendHtml(this._selectFocinhoLista, 
-                focinhos.map(focinho=>{
-                    //return `<option value="${focinho.idFocinho}">${focinho.descFocinho}</option>`
+        _loadItens(element, list, container = 'tbody'){
+            Util.appendHtml(element, 
+                list.map(item=>{
                     return `
                         <tr>
                             <td class="select-item">
-                                <input type="radio" value="${focinho.idFocinho}">
+                                <input type="radio" value="${item[Object.keys(item)[0]]}">
                             </td>
-                            <td>${focinho.descFocinho}</td>
+                            <td>${item[Object.keys(item)[1]]}</td>
                         </tr> `
                 }),
-                'tbody'
+                container
             )
         }
 
-        _effects(){
-            let seta = document.querySelector('.glyphicon-triangle-bottom');
-            
-            seta.addEventListener('click', function () {
-                document.querySelector('#focinho-select-lista').classList.toggle('invisible');
-            });
+        _createSelects(modelName, element){
+            let modelNameFirstUpper = modelName.replace(modelName.charAt(0),modelName.charAt(0).toUpperCase());
+            Util.appendHtml(element, 
+                `<span>${modelNameFirstUpper}:</span>  
+                 <table class="select-table table table-striped table-bordered">
+                    <caption class="info">${modelNameFirstUpper}
+                        <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+                    </caption>
+                    <tbody id="${modelNameFirstUpper.toLowerCase()}-select-lista" class="invisible body-table-selecet"></tbody>
+                 </table>`,
+                'div'
+            )
+        }
+
+        _pages(list){
+            console.log(list.length);
         }
     }

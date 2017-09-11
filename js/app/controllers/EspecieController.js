@@ -1,3 +1,4 @@
+
 class EspecieController{
 
     constructor() {
@@ -14,8 +15,7 @@ class EspecieController{
         this._smallSize = $('#small_size');
         this._midSize = $('#mid_size');
         this._bigSize = $('#big_size');
-        this._puppySize =$('#puppy_size');   
-
+        this._puppySize =$('#puppy_size');
 
         this._selectDorso = $('#dorso-select');
         this._selectFocinho = $('#focinho-select');
@@ -24,21 +24,8 @@ class EspecieController{
         this._selectBarbatana = $('#barbatana-select');
         this._selectDenticao = $('#denticao-select');
 
-        //this._loadData();
         this.load();
-    }
-
-    add(event){
-        event.preventDefault();
-        
-        /*Conn.conect('http://localhost:8282/sniet_api/servlet/especies/',
-        'POST', ToJson.generateJsonClean(this._createEspecie()),'application/json');*/
-
-        //this.load();
-
-        let obj  = this._selectDorso.value;
-
-        console.log(obj);
+        this._especieView._effects();
     }
 
     remove(){
@@ -57,29 +44,8 @@ class EspecieController{
     }
 
 
-    _loadData(){
-        this._especieView.loadBarbatana
-            (JSON.parse(Conn.conect(this._resourceUrl+'Barbatana','GET', null,'text/plain')[2]));
-
-        this._especieView.loadDenticao
-            (JSON.parse(Conn.conect(this._resourceUrl+'Denticao','GET', null,'text/plain')[2]));
-
-        this._especieView.loadDorso
-            (JSON.parse(Conn.conect(this._resourceUrl+'Dorso','GET', null,'text/plain')[2]));
-
-        this._especieView.loadFocinho
-            (JSON.parse(Conn.conect(this._resourceUrl+'Focinho','GET', null,'text/plain')[2]));
-
-        this._especieView.loadReproducao
-            (JSON.parse(Conn.conect(this._resourceUrl+'Reproducao','GET', null,'text/plain')[2]));
-
-        this._especieView.loadVentre
-            (JSON.parse(Conn.conect(this._resourceUrl+'Ventre','GET', null,'text/plain')[2]));
-    }
-
     load(){
-        this._especieView.loadFocinhoItens(
-        JSON.parse(Conn.conect(this._resourceUrl+'Focinho','GET', null,'text/plain')[2]));
+        this._especieView.loadTables(['dorso', 'focinho', 'reproducao', 'barbatana', 'denticao', 'ventre']);
     }
 
 }

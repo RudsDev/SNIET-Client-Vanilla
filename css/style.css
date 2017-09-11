@@ -42,18 +42,20 @@ select{
     max-width: 200px;
 }
 
-.especie-table{
+.select-table{
  width: 200px;
+ position: relative;
 }
 
 td.select-item{
     width: 10px;
 }
 
-.especie-table caption{
+.select-table caption{
     border: 1px solid #ddd;
     background-color: aliceblue;
     font-weight: 600;
+    padding: 0px 5px;
 }
 
 .invisible{
@@ -64,9 +66,25 @@ td.select-item{
     display: table-row-group;
 }
 
-.especie-table caption .glyphicon-triangle-bottom{
+.select-table caption .glyphicon-triangle-bottom{
     top: 4px;
     float: right;
     margin-right: 15px;
     cursor: pointer;
+}
+
+.cont-selec-table{
+    display: inline-flex;
+}
+
+.body-table-selecet{
+    position: absolute;
+    background: white;
+    width: 100%;
+    z-index: 50;
+}
+
+.body-table-selecet tr{
+    display: table;
+    width: 100%;
 }
