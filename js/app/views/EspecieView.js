@@ -11,6 +11,9 @@ class EspecieView{
             this._selectReprod = $('#reproducao-select');
             this._selectBarbatana = $('#barbatana-select');
             this._selectDenticao = $('#denticao-select');
+            this._selectFocinhoLista = $('#focinho-select-lista');
+
+            this._effects();
         }
 
 
@@ -66,5 +69,29 @@ class EspecieView{
                 }),
                 'span'
             )
+        }
+
+        loadFocinhoItens(focinhos){
+            Util.appendHtml(this._selectFocinhoLista, 
+                focinhos.map(focinho=>{
+                    //return `<option value="${focinho.idFocinho}">${focinho.descFocinho}</option>`
+                    return `
+                        <tr>
+                            <td class="select-item">
+                                <input type="radio" value="${focinho.idFocinho}">
+                            </td>
+                            <td>${focinho.descFocinho}</td>
+                        </tr> `
+                }),
+                'tbody'
+            )
+        }
+
+        _effects(){
+            let seta = document.querySelector('.glyphicon-triangle-bottom');
+            
+            seta.addEventListener('click', function () {
+                document.querySelector('#focinho-select-lista').classList.toggle('invisible');
+            });
         }
     }

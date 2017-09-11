@@ -9,7 +9,7 @@
     "client"
   ],
   "license": "MIT",
-  "homepage": "http://localhost/projects/usuario/cadastro.html",
+  "homepage": "http://localhost/projects/sniet_client_vanilla/cadastro_especie.html",
   "ignore": [
     "**/.*",
     "node_modules",

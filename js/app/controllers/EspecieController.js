@@ -78,8 +78,8 @@ class EspecieController{
     }
 
     load(){
-        
-        JSON.parse(Conn.conect(this._resourceUrl+'Dorso','GET', null,'text/plain')[2]);
+        this._especieView.loadFocinhoItens(
+        JSON.parse(Conn.conect(this._resourceUrl+'Focinho','GET', null,'text/plain')[2]));
     }
 
 }

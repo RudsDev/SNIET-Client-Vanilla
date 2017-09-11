@@ -56,11 +56,14 @@
         </select> 
         </br><br/>
 
-      Focinho: 
-        <select id="focinho-select">
-          <option disabled selected value> -- select an option -- </option>
-        </select> 
-        </br><br/>
+      <div>
+        <span>Focinho:</span> 
+        <table class="especie-table table table-striped table-bordered">
+          <caption class="info">Focinho<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></caption>
+          <tbody id="focinho-select-lista" class="invisible"></tbody>
+        </table>
+      </div>
+      </br><br/>
 
       Ventre: 
         <select id="ventre-select">
@@ -88,6 +91,7 @@
     
     </div>  
 
+
     Descricao: <textarea id="description" rows="1" cols="25"></textarea><br/><br/>
 
     Menor tamanho: <input type="text" id="small_size"/><br/><br/>
@@ -110,6 +114,7 @@
 
  <link rel="stylesheet" href="css/style.css">
 
+ <script src="js/effects.js"></script>
  <script src="js/app/models/Especie.js"></script>
  <script src="js/app/views/EspecieView.js"></script>
  <script src="js/app/controllers/EspecieController.js"></script>

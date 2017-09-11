@@ -41,3 +41,32 @@
 select{
     max-width: 200px;
 }
+
+.especie-table{
+ width: 200px;
+}
+
+td.select-item{
+    width: 10px;
+}
+
+.especie-table caption{
+    border: 1px solid #ddd;
+    background-color: aliceblue;
+    font-weight: 600;
+}
+
+.invisible{
+    display: none;
+}
+
+.table-visible{
+    display: table-row-group;
+}
+
+.especie-table caption .glyphicon-triangle-bottom{
+    top: 4px;
+    float: right;
+    margin-right: 15px;
+    cursor: pointer;
+}
