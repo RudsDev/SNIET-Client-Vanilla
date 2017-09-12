@@ -16,9 +16,11 @@ Add = {
         let btnAdd = document.querySelector('#add-pop-name');
 
         btnAdd.addEventListener('click',function(event) {
-            let name = nameInput.value;
+            /*let name = nameInput.value;
             let country = countryInput.value;
-            Add.createBox(name, country);
+            Add.createBox(name, country);*/
+            let list = JSON.parse(Conn.conect(this._resourceUrl+`Focinho/3/0`,'GET', null,'text/plain')[2]);
+            console.log(list)
         });
     },
 
