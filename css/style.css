@@ -88,3 +88,22 @@ td.select-item{
     display: table;
     width: 100%;
 }
+
+.pagination {
+    margin: 0px;
+    vertical-align: middle;
+}
+
+.navigation{
+    
+}
+
+tfoot{
+    position: absolute;
+    background: lightslategray;
+    width: 100%;
+    z-index: 50;
+    top: 420px;
+    padding: 0px 15px;
+    border: 1px solid lightslategray;
+}

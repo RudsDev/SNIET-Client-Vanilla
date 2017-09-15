@@ -3,6 +3,7 @@ Add = {
     init:function(){
 
         let btnAdd = document.querySelector('#add-popular-name');
+        this._resourceUrl = 'http://localhost:8282/sniet_api/servlet/resource/';
 
         Add.addNome();
         Add.generateJSON();
@@ -19,8 +20,8 @@ Add = {
             /*let name = nameInput.value;
             let country = countryInput.value;
             Add.createBox(name, country);*/
-            let list = JSON.parse(Conn.conect(this._resourceUrl+`Focinho/3/0`,'GET', null,'text/plain')[2]);
-            console.log(list)
+            //let list = JSON.parse(Conn.conect(`http://localhost:8282/sniet_api/servlet/resource/Focinho/3/0`,'GET', null,'text/plain')[2]);
+            console.log((Conn.conect(`http://localhost:8282/sniet_api/servlet/resource/Focinho/3/0`,'GET', null,'text/plain')[2]))
         });
     },
 

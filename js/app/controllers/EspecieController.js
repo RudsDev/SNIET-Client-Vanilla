@@ -45,7 +45,9 @@ class EspecieController{
 
 
     load(){
-        this._especieView.loadTables(['dorso', 'focinho', 'reproducao', 'barbatana', 'denticao', 'ventre']);
+        //this._especieView.loadTables(['dorso', 'focinho', 'reproducao', 'barbatana', 'denticao', 'ventre']);
+
+        this._especieView.loadTables(['dorso']);
     }
 
 }
