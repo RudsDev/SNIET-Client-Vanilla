@@ -94,16 +94,23 @@ td.select-item{
     vertical-align: middle;
 }
 
-.navigation{
-    
+.uk-pagination{
+    position: relative;
+    width: 100%;
+}
+
+.uk-pagination li{
+    display: table-cell;
 }
 
 tfoot{
     position: absolute;
-    background: lightslategray;
+    background: #ccc;
     width: 100%;
     z-index: 50;
     top: 420px;
-    padding: 0px 15px;
-    border: 1px solid lightslategray;
+    /*padding: 0px 15px;*/
+    border: 1px solid #ccc;
+    height: 28px;
+    max-height: 53px;
 }

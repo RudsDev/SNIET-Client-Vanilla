@@ -85,10 +85,11 @@ class EspecieView{
             )
         }
 
+
         _pages(element){
             //console.log(list.length);
 
-            let foot = `
+            let footOld = `
                 
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
@@ -112,7 +113,11 @@ class EspecieView{
                  
             `;
 
-            Util.appendHtml(document.querySelector('.select-table-foot'), foot, 'tfoot');
+            let foot = `
+            <ul class="uk-pagination" data-uk-pagination="{items:90, itemsOnPage:3, displayedPages:3, edges:1}">
+            </ul>
+            `;
 
+            Util.appendHtml(document.querySelector('.select-table-foot'), foot, 'tfoot');
         }
     }

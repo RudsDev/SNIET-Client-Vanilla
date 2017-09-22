@@ -20,6 +20,6 @@
   "dependencies": {
     "jquery": "^3.2.1",
     "bootstrap": "^3.3.7",
-    "google-maps": "^3.2.1"
+    "uikit": "^2.27.4"
   }
 }
