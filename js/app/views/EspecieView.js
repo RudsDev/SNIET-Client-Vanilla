@@ -15,7 +15,6 @@ class EspecieView{
                     let element = e.target;
                     let tbody = element.parentNode.parentNode.querySelector('tbody');
                     let tfoot = element.parentNode.parentNode.querySelector('tfoot');
-                    //console.log(tfoot);
                     tbody.classList.toggle('invisible');
                     tfoot.classList.toggle('invisible');
                 });
@@ -40,7 +39,7 @@ class EspecieView{
                 let list = lista;
                 this._createSelects(modelName, document.querySelector(`#${modelName}-select-div`));
                 this._loadItens(document.querySelector(`#${modelName}-select-lista`), list);
-                this._pages(document.querySelector(`.select-table`));
+                this._pages(()=>document.querySelectorAll(".select-table tr"));
             }
 
 
@@ -85,39 +84,16 @@ class EspecieView{
             )
         }
 
+        _pages(selecetTrs){
 
-        _pages(element){
-            //console.log(list.length);
+            let box = paginator({
+                get_rows: selecetTrs,
+                table: document.querySelector(".select-table")[0],
+                rows_per_page: 2,
+                box_mode: "list",
+            });
 
-            let footOld = `
-                
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                            </a>
-                        </li>
-                        </ul>
-                    </nav>
-                 
-            `;
-
-            let foot = `
-            <ul class="uk-pagination" data-uk-pagination="{items:90, itemsOnPage:3, displayedPages:3, edges:1}">
-            </ul>
-            `;
-
-            Util.appendHtml(document.querySelector('.select-table-foot'), foot, 'tfoot');
+            box.className = "box";
+            document.querySelector('.select-table-foot').appendChild(box);
         }
     }
