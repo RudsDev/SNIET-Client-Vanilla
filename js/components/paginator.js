@@ -38,7 +38,10 @@
  *      active_class: set the class for page buttons to have when active.
  *          defaults to "active"
  *
- *     tail_call: function to be called after paginator is done
+ *     tail_call: function to be called after paginator is done.
+ * 
+ *     span_infos: show span with infos about table itens.
+ *      
  * }
  */
 function paginator(config) {
@@ -110,16 +113,20 @@ function paginator(config) {
         page = 1;
     }
     config.page = page;
- 
+
     // hide rows not on current page and show the rows that are
     for (var i=0;i<trs.length;i++) {
+
+        /*if(trs[i].classList.value.split(' ').includes('tr-paginator'))
+            continue;*/
+
         if (typeof trs[i]["data-display"] == "undefined") {
             trs[i]["data-display"] = trs[i].style.display||"";
         }
         if (rows_per_page > 0) {
             if (i < page*rows_per_page && i >= (page-1)*rows_per_page) {
                 trs[i].style.display = trs[i]["data-display"];
-            } else {
+            } else { 
                 trs[i].style.display = "none";
             }
         } else {
@@ -242,12 +249,15 @@ function paginator(config) {
     }
 
     // status message
-    var stat = document.createElement("span");
-    stat.innerHTML = "On page " + page + " of " + pages
-        + ", showing rows " + (((page-1)*rows_per_page)+1)
-        + " to " + (trs.length<page*rows_per_page||rows_per_page==0?trs.length:page*rows_per_page)
-        + " of " + trs.length;
-    box.appendChild(stat);
+    if(config.span_infos){
+        var stat = document.createElement("span");
+        stat.innerHTML = "On page " + page + " of " + pages
+            + ", showing rows " + (((page-1)*rows_per_page)+1)
+            + " to " + (trs.length<page*rows_per_page||rows_per_page==0?trs.length:page*rows_per_page)
+            + " of " + trs.length;
+        box.appendChild(stat);
+    }
+
 
     // run tail function
     if (typeof config.tail_call == "function") {

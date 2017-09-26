@@ -14,9 +14,7 @@ class EspecieView{
                 seta.addEventListener('click', function (e) {
                     let element = e.target;
                     let tbody = element.parentNode.parentNode.querySelector('tbody');
-                    let tfoot = element.parentNode.parentNode.querySelector('tfoot');
                     tbody.classList.toggle('invisible');
-                    tfoot.classList.toggle('invisible');
                 });
             });
         }
@@ -39,7 +37,7 @@ class EspecieView{
                 let list = lista;
                 this._createSelects(modelName, document.querySelector(`#${modelName}-select-div`));
                 this._loadItens(document.querySelector(`#${modelName}-select-lista`), list);
-                this._pages(()=>document.querySelectorAll(".select-table tr"));
+                this._pages(()=>document.querySelectorAll(".select-table tr:not(.tr-paginator)"));
             }
 
 
@@ -73,12 +71,11 @@ class EspecieView{
             let modelNameFirstUpper = modelName.replace(modelName.charAt(0),modelName.charAt(0).toUpperCase());
             Util.appendHtml(element, 
                 `<span>${modelNameFirstUpper}:</span>  
-                 <table class="select-table table table-striped table-bordered">
+                 <table class="select-table table table-bordered">
                     <caption class="info">${modelNameFirstUpper}
                         <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
                     </caption>
                     <tbody id="${modelNameFirstUpper.toLowerCase()}-select-lista" class="invisible body-table-selecet"></tbody>
-                    <tfoot class="select-table-foot invisible"></tfoot>
                  </table>`,
                 'div'
             )
@@ -89,11 +86,16 @@ class EspecieView{
             let box = paginator({
                 get_rows: selecetTrs,
                 table: document.querySelector(".select-table")[0],
-                rows_per_page: 2,
+                rows_per_page: 3,
                 box_mode: "list",
+                page_options : false,
+                span_infos: false,
             });
 
+            let trPaginator = `<tr class="tr-paginator"></tr>`;
+
             box.className = "box";
-            document.querySelector('.select-table-foot').appendChild(box);
+            Util.appendHtml( document.querySelector('.body-table-selecet'), trPaginator, 'tbody');
+            document.querySelector('.tr-paginator').appendChild(box);
         }
     }

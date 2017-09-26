@@ -15,7 +15,7 @@ class EspecieController{
         this._smallSize = $('#small_size');
         this._midSize = $('#mid_size');
         this._bigSize = $('#big_size');
-        this._puppySize =$('#puppy_size');
+        this._puppySize = $('#puppy_size');
 
         this._selectDorso = $('#dorso-select');
         this._selectFocinho = $('#focinho-select');

@@ -48,7 +48,11 @@ select{
 }
 
 td.select-item{
-    width: 10px;
+    display: none;
+}
+
+.select-table td:hover{
+    background-color: #ccc;
 }
 
 .select-table caption{
@@ -92,15 +96,6 @@ td.select-item{
 .pagination {
     margin: 0px;
     vertical-align: middle;
-}
-
-.uk-pagination{
-    position: relative;
-    width: 100%;
-}
-
-.uk-pagination li{
-    display: table-cell;
 }
 
 tfoot{
