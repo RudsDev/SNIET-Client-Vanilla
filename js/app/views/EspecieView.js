@@ -37,7 +37,7 @@ class EspecieView{
                 let list = lista;
                 this._createSelects(modelName, document.querySelector(`#${modelName}-select-div`));
                 this._loadItens(document.querySelector(`#${modelName}-select-lista`), list);
-                this._pages(()=>document.querySelectorAll(".select-table tr:not(.tr-paginator)"));
+                this._pages(()=>document.querySelectorAll(".select-table tr:not(.tr-paginator)"),30);
             }
 
 
@@ -81,7 +81,7 @@ class EspecieView{
             )
         }
 
-        _pages(selecetTrs){
+        _pages(selecetTrs, totalPages){
 
             let box = paginator({
                 get_rows: selecetTrs,
@@ -90,6 +90,7 @@ class EspecieView{
                 box_mode: "list",
                 page_options : false,
                 span_infos: false,
+                total_pages: totalPages,
             });
 
             let trPaginator = `<tr class="tr-paginator"></tr>`;

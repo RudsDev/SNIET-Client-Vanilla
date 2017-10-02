@@ -35,12 +35,15 @@
  *               { value: 0,  text: 'All' }
  *           ]
  *
- *      active_class: set the class for page buttons to have when active.
+ *     active_class: set the class for page buttons to have when active.
  *          defaults to "active"
  *
  *     tail_call: function to be called after paginator is done.
  * 
- *     span_infos: show span with infos about table itens.
+ *     span_infos: show span tag with infos about table itens.
+ * 
+ *     total_pages: Optional. Total pages to be shown. Useful to use when paging by request. If undefined it will be calculed based in 
+ *          get_rows length.
  *      
  * }
  */
@@ -100,7 +103,10 @@ function paginator(config) {
     var page = config.page;
 
     // get page count
-    var pages = (rows_per_page > 0)? Math.ceil(trs.length / rows_per_page):1;
+    if(!config.total_pages)
+        var pages = config.total_pages;
+    else    
+        var pages = (rows_per_page > 0)? Math.ceil(trs.length / rows_per_page):1;
 
     // check that page and page count are sensible values
     if (pages < 1) {
