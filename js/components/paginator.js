@@ -42,12 +42,13 @@
  * 
  *     span_infos: show span tag with infos about table itens.
  * 
- *     total_pages: Optional. Total pages to be shown. Useful to use when paging by request. If undefined it will be calculed based in 
+ *     total_items: Optional. Total items to be shown. Useful to use when paging by request. If undefined it will be calculed based in 
  *          get_rows length.
  *      
  * }
  */
 function paginator(config) {
+
     // throw errors if insufficient parameters were given
     if (typeof config != "object")
         throw "Paginator was expecting a config object!";
@@ -103,8 +104,8 @@ function paginator(config) {
     var page = config.page;
 
     // get page count
-    if(!config.total_pages)
-        var pages = config.total_pages;
+    if(!config.total_items)
+        var pages = Math.ceil(config.total_items / rows_per_page);
     else    
         var pages = (rows_per_page > 0)? Math.ceil(trs.length / rows_per_page):1;
 
@@ -155,6 +156,7 @@ function paginator(config) {
                 var a  = document.createElement("a");
                 a.href = "#";
                 a.innerHTML = symbol;
+                addFunction(a);
                 a.addEventListener("click", function (event) {
                     event.preventDefault();
                     this.parentNode.click();
@@ -269,6 +271,13 @@ function paginator(config) {
     if (typeof config.tail_call == "function") {
         config.tail_call(config);
     }
-
     return box;
+}
+
+function addFunction(element){
+
+    element.addEventListener('click', (event)=>{
+        console.log(event.target);
+    })
+            
 }

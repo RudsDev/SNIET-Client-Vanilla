@@ -31,13 +31,15 @@ class EspecieView{
             {idDorso: 8, descCorDorso: "Azul-acinzentado"},
             {idDorso: 9, descCorDorso: "Cinza"}]
 
+            let totalPages = 9;//console.log(Conn.conect(this._resourceUrl+'qtd/'+'Dorso','GET', null,'text/plain'));
+
             for (var modelName of modelsNames) {
                 let modelNameFirstUpper = modelName.replace(modelName.charAt(0),modelName.charAt(0).toUpperCase());
                 //let list = JSON.parse(Conn.conect(this._resourceUrl+modelNameFirstUpper,'GET', null,'text/plain')[2]);
                 let list = lista;
                 this._createSelects(modelName, document.querySelector(`#${modelName}-select-div`));
                 this._loadItens(document.querySelector(`#${modelName}-select-lista`), list);
-                this._pages(()=>document.querySelectorAll(".select-table tr:not(.tr-paginator)"),30);
+                this._pages(()=>document.querySelectorAll(".select-table tr:not(.tr-paginator)"),totalPages);
             }
 
 
@@ -49,6 +51,8 @@ class EspecieView{
                 this._loadItens(document.querySelector(`#${modelName}-select-lista`), list);
                 this._pages(document.querySelector(`.select-table`));
             }*/
+
+            
         }
 
 
@@ -81,7 +85,9 @@ class EspecieView{
             )
         }
 
-        _pages(selecetTrs, totalPages){
+        _pages(selecetTrs, totalItens){
+
+            console.log(totalItens);
 
             let box = paginator({
                 get_rows: selecetTrs,
@@ -90,7 +96,7 @@ class EspecieView{
                 box_mode: "list",
                 page_options : false,
                 span_infos: false,
-                total_pages: totalPages,
+                total_items: totalItens,
             });
 
             let trPaginator = `<tr class="tr-paginator"></tr>`;
@@ -98,5 +104,22 @@ class EspecieView{
             box.className = "box";
             Util.appendHtml( document.querySelector('.body-table-selecet'), trPaginator, 'tbody');
             document.querySelector('.tr-paginator').appendChild(box);
+
+            //this._changePages();
+        }
+
+        _changePages(){
+
+            let pages = document.querySelectorAll('ul.pagination li');
+
+            //console.log(pages);
+
+            for(var index = 0; index < pages.length; index++) {
+                pages[index].addEventListener('click', (event)=>{
+                    
+                    console.log(event.target);
+                    console.log('teste');
+                })
+            }
         }
     }
