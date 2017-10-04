@@ -44,6 +44,9 @@
  * 
  *     total_items: Optional. Total items to be shown. Useful to use when paging by request. If undefined it will be calculed based in 
  *          get_rows length.
+ * 
+ *     function_request: . 
+ *     
  *      
  * }
  */
@@ -101,13 +104,16 @@ function paginator(config) {
     if (typeof config.page == "undefined") {
         config.page = 1;
     }
+
     var page = config.page;
 
     // get page count
-    if(!config.total_items)
+    if(!!config.total_items)
         var pages = Math.ceil(config.total_items / rows_per_page);
     else    
         var pages = (rows_per_page > 0)? Math.ceil(trs.length / rows_per_page):1;
+
+        //console.log(pages);
 
     // check that page and page count are sensible values
     if (pages < 1) {
@@ -156,7 +162,7 @@ function paginator(config) {
                 var a  = document.createElement("a");
                 a.href = "#";
                 a.innerHTML = symbol;
-                addFunction(a);
+                addFunction(a, config.function_request);
                 a.addEventListener("click", function (event) {
                     event.preventDefault();
                     this.parentNode.click();
@@ -274,10 +280,12 @@ function paginator(config) {
     return box;
 }
 
-function addFunction(element){
+function addFunction(element, callBackRequest){
 
-    element.addEventListener('click', (event)=>{
+    /*element.addEventListener('click', (event)=>{
         console.log(event.target);
-    })
+    })*/
+
+    element.addEventListener('click', callBackRequest());
             
 }

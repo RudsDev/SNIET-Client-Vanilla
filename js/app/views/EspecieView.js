@@ -54,7 +54,7 @@ class EspecieView{
             
 
             let type = 'Dorso';
-            let totalItens = Conn.conect(this._resourceUrl+'/qtd/'+'Dorso','GET', null,'text/plain');            
+            let totalItens = Conn.conect(this._resourceUrl+'/qtd/'+'Dorso','GET', null,'text/plain')[2];            
             let maxResults = 3;
             let firstResults = 0;
             let page = 1;
