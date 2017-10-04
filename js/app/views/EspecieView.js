@@ -1,7 +1,7 @@
 class EspecieView{
     
         constructor(element){
-            this._resourceUrl = 'http://localhost:8282/sniet_api/servlet/resource/';
+            this._resourceUrl = 'http://localhost:8282/sniet_api/servlet/resource';
         }
 
 
@@ -21,7 +21,7 @@ class EspecieView{
 
         loadTables(modelsNames){
 
-            let lista = [{idDorso: 1, descCorDorso: "Marrom"},
+            /*let lista = [{idDorso: 1, descCorDorso: "Marrom"},
             {idDorso: 2, descCorDorso: "Marrom-acinzentado"},
             {idDorso: 3, descCorDorso: "Marrom-acinzentado escuro com machas escuras"},
             {idDorso: 4, descCorDorso: "Marrom-amarelado"},
@@ -29,18 +29,17 @@ class EspecieView{
             {idDorso: 6, descCorDorso: "Cinza-azulado"},
             {idDorso: 7, descCorDorso: "Azul escuro"},
             {idDorso: 8, descCorDorso: "Azul-acinzentado"},
-            {idDorso: 9, descCorDorso: "Cinza"}]
+            {idDorso: 9, descCorDorso: "Cinza"}]*/
 
-            let totalPages = 9;//console.log(Conn.conect(this._resourceUrl+'qtd/'+'Dorso','GET', null,'text/plain'));
-
-            for (var modelName of modelsNames) {
+            
+            /*for (var modelName of modelsNames) {
                 let modelNameFirstUpper = modelName.replace(modelName.charAt(0),modelName.charAt(0).toUpperCase());
                 //let list = JSON.parse(Conn.conect(this._resourceUrl+modelNameFirstUpper,'GET', null,'text/plain')[2]);
                 let list = lista;
                 this._createSelects(modelName, document.querySelector(`#${modelName}-select-div`));
                 this._loadItens(document.querySelector(`#${modelName}-select-lista`), list);
                 this._pages(()=>document.querySelectorAll(".select-table tr:not(.tr-paginator)"),totalPages);
-            }
+            }*/
 
 
             /*for (var modelName of modelsNames) {
@@ -52,6 +51,17 @@ class EspecieView{
                 this._pages(document.querySelector(`.select-table`));
             }*/
 
+            
+
+            let type = 'Dorso';
+            let totalItens = Conn.conect(this._resourceUrl+'/qtd/'+'Dorso','GET', null,'text/plain');            
+            let maxResults = 3;
+            let firstResults = 0;
+            let page = 1;
+            let uri = `${this._resourceUrl}/${type}/${maxResults}/${firstResults}`;
+            let callBack = ()=>{ return JSON.parse(Conn.conect(uri,'GET', null,'text/plain')[2])};
+
+            new SelectPaginator('Dorso',document.querySelector('#dorso-select-div'), callBack, true, totalItens, page, maxResults);
             
         }
 
