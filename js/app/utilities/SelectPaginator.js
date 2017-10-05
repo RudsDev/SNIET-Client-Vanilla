@@ -4,24 +4,20 @@ class SelectPaginator {
     /**
      * @param {string} itemName - Nome utilizado na exibição do elemento.
      * @param {HTMLDivElement} container - Div em que o select-paginator será rendereizado.
-     * @param {Function} callback - Função que será utilizada para recurepar os dados que das <tr>.
+     * @param {Function} callBack - Função que será utilizada para recurepar os dados que das <tr>.
      * @param {integer} totalItens - Total de elementos que estarão presentes no select-paginator.
      * @param {integer} page - Número da página a ser exibida.
      * @param {integer} rowsPerPage - Quantidade de <tr> por página.
      * @param {Function} callbackRequest - callBack contendo a função responsavel pelo request que ira trazer os dados desejados.
      */
-    constructor(itemName, container, callBack, request=true, totalItens,page,rowsPerPage, callbackRequest){
+    constructor(itemName, container, callBack, request=true, totalItens,page,rowsPerPage){
 
         this._createSelectPaginator(itemName,container);
 
         if(request){
-            // console.log(itemName);
-            // console.log(document.querySelector(`#${itemName}-select-lista`));
             this._createTrs(document.querySelector(`#${itemName.toLowerCase()}-select-lista`),callBack());
-            
         }
-        this._pagesRequest(()=>document.querySelectorAll(".select-table tr:not(.tr-paginator)"),totalItens, page, rowsPerPage);
-        this._paginate();
+        this._pagesRequest(()=>document.querySelectorAll(".select-table tr:not(.tr-paginator)"),totalItens, page, rowsPerPage, this._createTrs);
     }
 
     /**
@@ -55,9 +51,9 @@ class SelectPaginator {
      */
     _createTrs(tbody, list = new Array()){
 
-        console.log(list);
+       //console.log(list);
 
-        Util.appendHtml(tbody, 
+       Util.appendHtml(tbody, 
             list.map(item=>{
                 return `
                     <tr>
@@ -81,11 +77,9 @@ class SelectPaginator {
      * @param {integer} page - Número da página a ser exibida.
      * @param {integer} rowsPerPage - Quantidade de <tr> por página.
      */
-    _pagesRequest(trs,totalItens,page,rowsPerPage, callbackRequest){
+    _pagesRequest(trs,totalItens,page,rowsPerPage){
         
-        console.log('totalItens: ' + totalItens);
-
-        let box = paginator({
+        let box = Paginator.init({
             get_rows: trs,
             table: document.querySelector(".select-table")[0],
             rows_per_page: rowsPerPage,
@@ -94,7 +88,6 @@ class SelectPaginator {
             page_options : false,
             span_infos: false,
             total_items: totalItens,
-            function_request: callbackRequest, //Documentar em paginator.js
         });
 
         let trPaginator = `<tr class="tr-paginator"></tr>`;
@@ -103,14 +96,4 @@ class SelectPaginator {
         Util.appendHtml( document.querySelector('.body-table-selecet'), trPaginator, 'tbody');
         document.querySelector('.tr-paginator').appendChild(box);
     }
-
-    /*_paginate(){
-        let lis = document.querySelectorAll('ul.pagination li');  
-        console.log(lis);
-        for (var index = 0; index < lis.length; index++) {
-            lis[index].addEventListener('click',()=>{
-                console.log('OLA');
-            });   
-        }
-    }*/
 }
