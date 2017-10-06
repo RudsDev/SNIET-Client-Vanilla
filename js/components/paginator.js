@@ -55,7 +55,7 @@
 Paginator = {
 
     init: function paginator(config) {
-        
+
         Paginator._config = config;
 
         // throw errors if insufficient parameters were given
@@ -168,7 +168,6 @@ Paginator = {
                     var a  = document.createElement("a");
                     a.href = "#";
                     a.innerHTML = symbol;
-                    // Paginator._addFunction(a, config.function_request); paginationListener
                     Paginator._addFunction(a, Paginator._paginationListener);
                     a.addEventListener("click", function (event) {
                         event.preventDefault();
@@ -286,31 +285,23 @@ Paginator = {
         return box;
     },
 
-    _config: undefined,
-
     _addFunction: function addFunction(element, myFunction){
         element.addEventListener('click', myFunction);          
     },
 
     _paginationListener: function(){
-
+        
         let target = parseInt(event.target.text);
+        Paginator.page = target-1;
+
         if(isNaN(target))
             return new Error();
         else {
-            Paginator._config.function_request((document.querySelector(`#${'dorso'.toLowerCase()}-select-lista`)),Paginator.request(target-1));
+            Paginator.request();
         }
     },
-
-    request: function(page){
-        let resourceUrl = 'http://localhost:8282/sniet_api/servlet/resource';
-        let type = 'Dorso';
-        let totalItens = Conn.conect(resourceUrl+'/qtd/'+'Dorso','GET', null,'text/plain')[2];            
-        let maxResults = 3;
-        let firstResults = page;
-        let uri = `${resourceUrl}/${type}/${maxResults}/${firstResults}`;
-        
-        return JSON.parse(Conn.conect(uri,'GET', null,'text/plain')[2]);
-    },
     
+    _config: undefined,
+    request:undefined,
+    page: undefined,
 }

@@ -16,8 +16,12 @@ class SelectPaginator {
 
         if(request){
             this._createTrs(document.querySelector(`#${itemName.toLowerCase()}-select-lista`),callBack());
+
+            Paginator.request = this.request
         }
         this._pagesRequest(()=>document.querySelectorAll(".select-table tr:not(.tr-paginator)"),totalItens, page, rowsPerPage, this._createTrs);
+
+        
     }
 
     /**
@@ -77,8 +81,7 @@ class SelectPaginator {
      * @param {integer} page - Número da página a ser exibida.
      * @param {integer} rowsPerPage - Quantidade de <tr> por página.
      */
-    _pagesRequest(trs,totalItens,page,rowsPerPage){
-        
+    _pagesRequest(trs,totalItens,page,rowsPerPage, callBack){
         let box = Paginator.init({
             get_rows: trs,
             table: document.querySelector(".select-table")[0],
@@ -88,6 +91,7 @@ class SelectPaginator {
             page_options : false,
             span_infos: false,
             total_items: totalItens,
+            function_request: callBack
         });
 
         let trPaginator = `<tr class="tr-paginator"></tr>`;
@@ -95,5 +99,23 @@ class SelectPaginator {
         box.className = "box";
         Util.appendHtml( document.querySelector('.body-table-selecet'), trPaginator, 'tbody');
         document.querySelector('.tr-paginator').appendChild(box);
+        this.teste();
+    }
+
+    request(page){
+
+        let resourceUrl = 'http://localhost:8282/sniet_api/servlet/resource';
+        let type = 'Dorso';    
+        let maxResults = 3;
+        let firstResults = page;
+        let uri = `${resourceUrl}/${type}/${maxResults}/${firstResults}`;
+
+        return JSON.parse(Conn.conect(uri,'GET', null,'text/plain')[2]);
+    }
+
+    teste(){
+        Paginator.request = ()=>{ //TODO  - Pegar nome da Tbody
+            this._createTrs(document.querySelector(`#${'dorso'.toLowerCase()}-select-lista`), this.request(Paginator.page));
+        };
     }
 }
