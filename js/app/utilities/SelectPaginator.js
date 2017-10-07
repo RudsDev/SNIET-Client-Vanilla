@@ -104,6 +104,8 @@ class SelectPaginator {
 
     request(page){
 
+        console.log(page);
+
         let resourceUrl = 'http://localhost:8282/sniet_api/servlet/resource';
         let type = 'Dorso';    
         let maxResults = 3;
@@ -115,7 +117,8 @@ class SelectPaginator {
 
     teste(){
         Paginator.request = ()=>{ //TODO  - Pegar nome da Tbody
-            this._createTrs(document.querySelector(`#${'dorso'.toLowerCase()}-select-lista`), this.request(Paginator.page));
+            console.log(Paginator.page.parent);
+            this._createTrs(Paginator.page.parent, this.request(Paginator.page.pageNumber));
         };
     }
 }

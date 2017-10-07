@@ -56,8 +56,6 @@ Paginator = {
 
     init: function paginator(config) {
 
-        Paginator._config = config;
-
         // throw errors if insufficient parameters were given
         if (typeof config != "object")
             throw "Paginator was expecting a config object!";
@@ -118,8 +116,6 @@ Paginator = {
             var pages = Math.ceil(config.total_items / rows_per_page);
         else    
             var pages = (rows_per_page > 0)? Math.ceil(trs.length / rows_per_page):1;
-    
-            //console.log(pages);
     
         // check that page and page count are sensible values
         if (pages < 1) {
@@ -292,7 +288,10 @@ Paginator = {
     _paginationListener: function(){
         
         let target = parseInt(event.target.text);
-        Paginator.page = target-1;
+
+        Paginator.page.pageElement = event.target;
+        Paginator.page.pageNumber = target-1;
+        Paginator.page.parent = Util.parent(event.target,'tbody');
 
         if(isNaN(target))
             return new Error();
@@ -301,7 +300,10 @@ Paginator = {
         }
     },
     
-    _config: undefined,
     request:undefined,
-    page: undefined,
+    page: {
+        pageNumber: undefined,
+        pageElement:undefined,
+        parent:undefined,
+    },
 }
