@@ -4,7 +4,6 @@ class EspecieView{
         this._resourceUrl = 'http://localhost:8282/sniet_api/servlet/resource';
     }
 
-
     _effects(modelName){
 
         let setas = document.querySelectorAll(`.glyphicon-triangle-bottom`);
@@ -23,14 +22,21 @@ class EspecieView{
     loadTables(modelsNames){
 
         let type = 'Dorso';
-        let totalItens = Conn.conect(this._resourceUrl+'/qtd/'+'Dorso','GET', null,'text/plain')[2];            
-        let maxResults = 3;
-        let firstResults = 0;
-        let page = 1;
-        let uri = `${this._resourceUrl}/${type}/${maxResults}/${firstResults}`;
-        let callBack = ()=>{ return JSON.parse(Conn.conect(uri,'GET', null,'text/plain')[2])};
-
-        new SelectPaginator('Dorso',document.querySelector('#dorso-select-div'), callBack, true, totalItens, page, maxResults, callBack);
+        const totalItens = Conn.conect(this._resourceUrl+'/qtd/'+type,'GET', null,'text/plain')[2];            
         
+        
+        let requestInfos ={
+            itemName: type,
+            resourceUri: this._resourceUrl,
+            rowsPerPage: 3,
+            totalItens: totalItens,
+            page:0,
+            pathModel: ['itemName','rowsPerPage','page'],
+
+        }
+
+        let list = JSON.parse(Conn.conect(`${requestInfos.resourceUri}/${requestInfos.itemName}/${requestInfos.rowsPerPage}/0`,'GET', null,'text/plain')[2]);
+
+        new SelectPaginator(document.querySelector(`#${type.toLowerCase()}-select-div`), list, requestInfos);
     }
 }

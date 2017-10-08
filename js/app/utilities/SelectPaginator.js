@@ -4,24 +4,25 @@ class SelectPaginator {
     /**
      * @param {string} itemName - Nome utilizado na exibição do elemento.
      * @param {HTMLDivElement} container - Div em que o select-paginator será rendereizado.
-     * @param {Function} callBack - Função que será utilizada para recurepar os dados que das <tr>.
-     * @param {integer} totalItens - Total de elementos que estarão presentes no select-paginator.
-     * @param {integer} page - Número da página a ser exibida.
-     * @param {integer} rowsPerPage - Quantidade de <tr> por página.
-     * @param {Function} callbackRequest - callBack contendo a função responsavel pelo request que ira trazer os dados desejados.
+     * @param {Array} firstTrs - Listagem dos elements <tr> que irão popular a primeira página.
+     * 
+     * @param {Object} requestInfos - Objeto literal personalizavel com informações para realizar a requisição que popula as páginas.
+     * @param {string} requestInfos.itemName - Obrigatório. Nome utilizado na exibição do elemento.
+     * @param {string} requestInfos.resourceUri - Obrigatório. URI do resource para a qual será feito o request.
+     * @param {integer} requestInfos.rowsPerPage - Obrigatório. Quantidade de <tr> por página.
+     * @param {integer} requestInfos.totalItens - Obrigatório. Total de elementos que estarão presentes no select-paginator.
+     * @param {Array} requestInfos.pathModel - Obrigatório. Array com strings ordenadas de modo a reproduzir o path do resource que preenche as trs.
      */
-    constructor(itemName, container, callBack, request=true, totalItens,page,rowsPerPage){
+    constructor(container, firstTrs, requestInfos){
 
-        this._createSelectPaginator(itemName,container);
+        this._rqInf = requestInfos;
 
-        if(request){
-            this._createTrs(document.querySelector(`#${itemName.toLowerCase()}-select-lista`),callBack());
-
-            Paginator.request = this.request
-        }
-        this._pagesRequest(()=>document.querySelectorAll(".select-table tr:not(.tr-paginator)"),totalItens, page, rowsPerPage, this._createTrs);
-
+        this._createSelectPaginator(this._rqInf.itemName,container);
+        this._createTrs(document.querySelector(`#${this._rqInf.itemName.toLowerCase()}-select-lista`),firstTrs);
         
+        Paginator.request = this.request
+        
+        this._pagesRequest(()=>document.querySelectorAll(".select-table tr:not(.tr-paginator)"),this._rqInf.totalItens, 0, this._rqInf.rowsPerPage, this._createTrs);        
     }
 
     /**
@@ -55,8 +56,6 @@ class SelectPaginator {
      */
     _createTrs(tbody, list = new Array()){
 
-       //console.log(list);
-
        Util.appendHtml(tbody, 
             list.map(item=>{
                 return `
@@ -66,9 +65,7 @@ class SelectPaginator {
                         </td>
                         <td>${item[Object.keys(item)[1]]}</td>
                     </tr> `
-            }),
-            'tbody'
-        )
+            }),'tbody');
     }
 
 
@@ -99,26 +96,38 @@ class SelectPaginator {
         box.className = "box";
         Util.appendHtml( document.querySelector('.body-table-selecet'), trPaginator, 'tbody');
         document.querySelector('.tr-paginator').appendChild(box);
-        this.teste();
+        this._loadNextPage();
     }
 
     request(page){
-
-        console.log(page);
-
-        let resourceUrl = 'http://localhost:8282/sniet_api/servlet/resource';
-        let type = 'Dorso';    
-        let maxResults = 3;
+        let resourceUrl = this._resourceUrl;
+        let itemName = this._itemName;    
+        let maxResults = this._rowsPerPage;
         let firstResults = page;
-        let uri = `${resourceUrl}/${type}/${maxResults}/${firstResults}`;
+        let uri = this._mountURI();
 
         return JSON.parse(Conn.conect(uri,'GET', null,'text/plain')[2]);
     }
 
-    teste(){
-        Paginator.request = ()=>{ //TODO  - Pegar nome da Tbody
-            console.log(Paginator.page.parent);
+    _loadNextPage(){
+        Paginator.request = ()=>{
             this._createTrs(Paginator.page.parent, this.request(Paginator.page.pageNumber));
         };
+    }
+
+
+    _mountURI(){
+
+        this._rqInf.page = Paginator.page.pageNumber;
+        let path = [];
+
+        for (let key in this._rqInf) {
+            for(let value of this._rqInf.pathModel){
+                if(key.search(value)===0){
+                    path.push(this._rqInf[key]);
+                }    
+            }
+        }
+        return this._rqInf.resourceUri+'/'+path.join('/');
     }
 }
