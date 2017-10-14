@@ -301,6 +301,10 @@ Paginator = {
     },
     
     request:undefined,
+
+     /**
+     * Interface usada para obter informações sobre a página acessada.
+     */
     page: {
         pageNumber: undefined,
         pageElement:undefined,
