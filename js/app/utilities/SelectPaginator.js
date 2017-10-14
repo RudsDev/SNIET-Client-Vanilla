@@ -20,7 +20,7 @@ class SelectPaginator {
         this._createSelectPaginator(this._rqInf.itemName,container);
         this._createTrs(document.querySelector(`#${this._rqInf.itemName.toLowerCase()}-select-lista`),firstTrs);
         
-        Paginator.request = this.request
+        Paginator.request = this._request
         
         this._pagesRequest(()=>document.querySelectorAll(".select-table tr:not(.tr-paginator)"),this._rqInf.totalItens, 0, this._rqInf.rowsPerPage, this._createTrs);        
     }
@@ -99,7 +99,7 @@ class SelectPaginator {
         this._loadNextPage();
     }
 
-    request(page){
+    _request(page){
         let resourceUrl = this._resourceUrl;
         let itemName = this._itemName;    
         let maxResults = this._rowsPerPage;
@@ -111,7 +111,8 @@ class SelectPaginator {
 
     _loadNextPage(){
         Paginator.request = ()=>{
-            this._createTrs(Paginator.page.parent, this.request(Paginator.page.pageNumber));
+            if(!this._trsExists())
+            this._createTrs(Paginator.page.parent, this._request(Paginator.page.pageNumber));
         };
     }
 
@@ -129,5 +130,15 @@ class SelectPaginator {
             }
         }
         return this._rqInf.resourceUri+'/'+path.join('/');
+    }
+
+
+    /**
+     * Verifica se todas as <tr> possiveis já foram renderizadas no selectPaginator.
+     */
+    _trsExists(){
+        let select = Paginator.page.parent;
+        let qtdTrs = select.querySelectorAll('tr').length-1;
+        return qtdTrs>=this._rqInf.totalItens;
     }
 }
