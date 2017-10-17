@@ -56,16 +56,20 @@ class SelectPaginator {
      */
     _createTrs(tbody, list = new Array()){
 
-       Util.appendHtml(tbody, 
-            list.map(item=>{
-                return `
-                    <tr>
-                        <td class="select-item">
-                            <input type="radio" value="${item[Object.keys(item)[0]]}">
-                        </td>
-                        <td>${item[Object.keys(item)[1]]}</td>
-                    </tr> `
-            }),'tbody');
+        console.log('_createTrs');
+
+        Util.appendHtml(tbody, 
+                list.map(item=>{
+                    return `
+                        <tr>
+                            <td class="select-item">
+                                <input type="radio" name="selected-item" value="${item[Object.keys(item)[0]]}">
+                            </td>
+                            <td>${item[Object.keys(item)[1]]}</td>
+                        </tr> `
+                }),'tbody');
+            
+        this._selectItem();
     }
 
 
@@ -164,5 +168,39 @@ class SelectPaginator {
             }
         }
         tbody.appendChild(paginator);
+    }
+
+    _selectItem(){
+
+        console.log('_selectItem');
+
+        let trs = document.querySelectorAll('tbody.body-table-selecet tr:not(.tr-paginator)');
+
+        console.log(trs);
+
+        for (var index = 0; index < trs.length; index++) {
+            
+            let item = trs[index];
+
+            //console.log(item);
+
+            item.removeEventListener('click',this._selectItemAction);
+            item.addEventListener('click',this._selectItemAction);
+            
+        }
+    }
+
+
+    _selectItemAction(event){
+
+        let itemSelected = event.currentTarget;
+        let radio = itemSelected.querySelector('input[name=selected-item]');
+
+        //radio.checked = true;
+
+        //console.log(document.querySelector(itemSelected));
+
+        console.log(radio);
+        console.log(itemSelected);
     }
 }
