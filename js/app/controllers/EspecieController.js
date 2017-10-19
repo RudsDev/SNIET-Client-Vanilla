@@ -25,7 +25,6 @@ class EspecieController{
         this._selectDenticao = $('#denticao-select');
 
         this.load();
-        this._especieView._effects();
     }
 
     remove(){

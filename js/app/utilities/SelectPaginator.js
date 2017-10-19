@@ -17,12 +17,15 @@ class SelectPaginator {
 
         this._rqInf = requestInfos;
 
+        this._eventShowSelect = new Event('eventShowSelect')
+
         this._createSelectPaginator(this._rqInf.itemName,container);
         this._createTrs(document.querySelector(`#${this._rqInf.itemName.toLowerCase()}-select-lista`),firstTrs);
         
         Paginator.request = this._request
         
-        this._pagesRequest(()=>document.querySelectorAll(`#select-table-${this._rqInf.itemName.toLocaleLowerCase()} tr:not(.tr-paginator)`), this._rqInf.itemName,this._rqInf.totalItens, 0, this._rqInf.rowsPerPage, this._createTrs);        
+        this._pagesRequest(()=>document.querySelectorAll(`#select-table-${this._rqInf.itemName.toLocaleLowerCase()} tr:not(.tr-paginator)`), this._rqInf.itemName,this._rqInf.totalItens, 0, this._rqInf.rowsPerPage, this._createTrs);
+        this._effects();
     }
 
     /**
@@ -36,7 +39,8 @@ class SelectPaginator {
         Util.appendHtml(container, 
             `<span>${itemNameFirstUpper}:</span>  
             <table id="select-table-${itemName.toLocaleLowerCase()}" class="select-table table table-bordered">
-                <caption class="info">${itemNameFirstUpper}
+                <caption class="info">
+                    <span class="selected-value">${itemNameFirstUpper}</span>
                     <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
                 </caption>
                 <tbody id="${itemNameFirstUpper.toLowerCase()}-select-lista" class="invisible body-table-selecet"></tbody>
@@ -56,7 +60,7 @@ class SelectPaginator {
      */
     _createTrs(tbody, list = new Array()){
 
-        console.log('_createTrs');
+        // console.log('_createTrs');
 
         Util.appendHtml(tbody, 
                 list.map(item=>{
@@ -65,7 +69,7 @@ class SelectPaginator {
                             <td class="select-item">
                                 <input type="radio" name="selected-item" value="${item[Object.keys(item)[0]]}">
                             </td>
-                            <td>${item[Object.keys(item)[1]]}</td>
+                            <td class="item-value">${item[Object.keys(item)[1]]}</td>
                         </tr> `
                 }),'tbody');
             
@@ -172,11 +176,11 @@ class SelectPaginator {
 
     _selectItem(){
 
-        console.log('_selectItem');
+        //console.log('_selectItem');
 
         let trs = document.querySelectorAll('tbody.body-table-selecet tr:not(.tr-paginator)');
 
-        console.log(trs);
+        //console.log(trs);
 
         for (var index = 0; index < trs.length; index++) {
             
@@ -193,14 +197,45 @@ class SelectPaginator {
 
     _selectItemAction(event){
 
-        let itemSelected = event.currentTarget;
-        let radio = itemSelected.querySelector('input[name=selected-item]');
+        let trSelected = event.currentTarget;
+        let selectedValue = trSelected.querySelector('td.item-value');
+        let table = trSelected.parentNode.parentNode;
+        let caption = table.querySelector('caption span.selected-value');
+        let radio = trSelected.querySelector('input[name=selected-item]');
 
-        //radio.checked = true;
+        radio.checked = true;
 
         //console.log(document.querySelector(itemSelected));
 
-        console.log(radio);
-        console.log(itemSelected);
+        console.log(selectedValue.innerText);
+        console.log(caption.innerText);
+
+        caption.innerText = selectedValue.innerText;
+
     }
+
+    _effects(modelName){
+
+        console.log('effects');
+        
+        let setas = document.querySelectorAll(`.glyphicon-triangle-bottom`);
+        let setasArr = Array.from(setas);
+
+        // setasArr.map(seta=>{
+        //     seta.addEventListener('click', function (e) {
+        //         let element = e.target;
+        //         let tbody = element.parentNode.parentNode.querySelector('tbody');
+        //         tbody.classList.toggle('invisible');
+        //     });
+        // });
+
+        setasArr.map(seta=>{
+            seta.addEventListener('eventShowSelect', function (e) {
+                let element = e.target;
+                let tbody = element.parentNode.parentNode.querySelector('tbody');
+                tbody.classList.toggle('invisible');
+            });
+        });
+    }
+    
 }

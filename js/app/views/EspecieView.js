@@ -4,19 +4,19 @@ class EspecieView{
         this._resourceUrl = 'http://localhost:8282/sniet_api/servlet/resource';
     }
 
-    _effects(modelName){
+    // _effects(modelName){
 
-        let setas = document.querySelectorAll(`.glyphicon-triangle-bottom`);
-        let setasArr = Array.from(setas);
+    //     let setas = document.querySelectorAll(`.glyphicon-triangle-bottom`);
+    //     let setasArr = Array.from(setas);
 
-        setasArr.map(seta=>{
-            seta.addEventListener('click', function (e) {
-                let element = e.target;
-                let tbody = element.parentNode.parentNode.querySelector('tbody');
-                tbody.classList.toggle('invisible');
-            });
-        });
-    }
+    //     setasArr.map(seta=>{
+    //         seta.addEventListener('click', function (e) {
+    //             let element = e.target;
+    //             let tbody = element.parentNode.parentNode.querySelector('tbody');
+    //             tbody.classList.toggle('invisible');
+    //         });
+    //     });
+    // }
 
     
     loadTables(modelsNames){
