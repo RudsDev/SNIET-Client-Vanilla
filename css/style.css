@@ -38,6 +38,11 @@
     height: 26px;
 }
 
+caption.info{
+    color: black;
+    background-color: white;
+}
+
 select{
     max-width: 200px;
 }
@@ -45,6 +50,7 @@ select{
 .select-table{
  width: 200px;
  position: relative;
+ margin-left: 5px;
 }
 
 td.select-item{
@@ -56,10 +62,20 @@ td.select-item{
 }
 
 .select-table caption{
+    height: 20px;
     border: 1px solid #ddd;
-    background-color: aliceblue;
-    font-weight: 600;
-    padding: 0px 5px;
+    padding: 0px 3px;
+}
+
+span.selected-value{
+    display: inline-block;
+    max-width: 155px;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    top: -1.5px;
 }
 
 .invisible{
@@ -75,6 +91,7 @@ td.select-item{
     float: right;
     margin-right: 15px;
     cursor: pointer;
+    font-size: 12px;
 }
 
 .cont-selec-table{
@@ -109,3 +126,10 @@ tfoot{
     height: 28px;
     max-height: 53px;
 }
+
+.disable-select {
+    -webkit-user-select: none;  
+    -moz-user-select: none;    
+    -ms-user-select: none;      
+    user-select: none;
+  }

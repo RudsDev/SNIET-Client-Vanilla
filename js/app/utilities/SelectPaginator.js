@@ -17,8 +17,6 @@ class SelectPaginator {
 
         this._rqInf = requestInfos;
 
-        this._eventShowSelect = new Event('eventShowSelect')
-
         this._createSelectPaginator(this._rqInf.itemName,container);
         this._createTrs(document.querySelector(`#${this._rqInf.itemName.toLowerCase()}-select-lista`),firstTrs);
         
@@ -60,8 +58,6 @@ class SelectPaginator {
      */
     _createTrs(tbody, list = new Array()){
 
-        // console.log('_createTrs');
-
         Util.appendHtml(tbody, 
                 list.map(item=>{
                     return `
@@ -69,7 +65,7 @@ class SelectPaginator {
                             <td class="select-item">
                                 <input type="radio" name="selected-item" value="${item[Object.keys(item)[0]]}">
                             </td>
-                            <td class="item-value">${item[Object.keys(item)[1]]}</td>
+                            <td class="item-value disable-select">${item[Object.keys(item)[1]]}</td>
                         </tr> `
                 }),'tbody');
             
@@ -129,7 +125,9 @@ class SelectPaginator {
         };
     }
 
-
+    /**
+     * Monta a URI de acordo com o que foi definido através do parâmetro 'requestInfos.pathModel' no construtor.
+     */
     _mountURI(){
 
         this._rqInf.page = Paginator.page.pageNumber;
@@ -176,17 +174,11 @@ class SelectPaginator {
 
     _selectItem(){
 
-        //console.log('_selectItem');
-
         let trs = document.querySelectorAll('tbody.body-table-selecet tr:not(.tr-paginator)');
-
-        //console.log(trs);
 
         for (var index = 0; index < trs.length; index++) {
             
             let item = trs[index];
-
-            //console.log(item);
 
             item.removeEventListener('click',this._selectItemAction);
             item.addEventListener('click',this._selectItemAction);
@@ -201,41 +193,32 @@ class SelectPaginator {
         let selectedValue = trSelected.querySelector('td.item-value');
         let table = trSelected.parentNode.parentNode;
         let caption = table.querySelector('caption span.selected-value');
+        let seta = table.querySelector('caption span.glyphicon');
         let radio = trSelected.querySelector('input[name=selected-item]');
+
+        //recolhe o menu de seleção ao se escolher um item.
+        seta.click();
 
         radio.checked = true;
 
-        //console.log(document.querySelector(itemSelected));
-
-        console.log(selectedValue.innerText);
-        console.log(caption.innerText);
-
         caption.innerText = selectedValue.innerText;
-
     }
 
     _effects(modelName){
 
-        console.log('effects');
-        
         let setas = document.querySelectorAll(`.glyphicon-triangle-bottom`);
         let setasArr = Array.from(setas);
 
-        // setasArr.map(seta=>{
-        //     seta.addEventListener('click', function (e) {
-        //         let element = e.target;
-        //         let tbody = element.parentNode.parentNode.querySelector('tbody');
-        //         tbody.classList.toggle('invisible');
-        //     });
-        // });
-
         setasArr.map(seta=>{
-            seta.addEventListener('eventShowSelect', function (e) {
-                let element = e.target;
-                let tbody = element.parentNode.parentNode.querySelector('tbody');
-                tbody.classList.toggle('invisible');
-            });
+            seta.removeEventListener('click', this._eventShowSelect);
+            seta.addEventListener('click', this._eventShowSelect);
         });
+    }
+
+    _eventShowSelect (event) {
+        let element = event.target;
+        let tbody = element.parentNode.parentNode.querySelector('tbody');
+        tbody.classList.toggle('invisible');
     }
     
 }
