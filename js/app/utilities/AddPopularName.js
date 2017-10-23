@@ -17,12 +17,9 @@ Add = {
         let btnAdd = document.querySelector('#add-pop-name');
 
         btnAdd.addEventListener('click',function(event) {
-            /*let name = nameInput.value;
+            let name = nameInput.value;
             let country = countryInput.value;
-            Add.createBox(name, country);*/
-            //let list = JSON.parse(Conn.conect(`http://localhost:8282/sniet_api/servlet/resource/Focinho/3/0`,'GET', null,'text/plain')[2]);
-            //console.log((Conn.conect(`http://localhost:8282/sniet_api/servlet/resource/Focinho/3/0`,'GET', null,'text/plain')[2]))
-            console.log((Conn.conect(`http://localhost:8282/sniet_api/servlet/resource/qtd/Focinho`,'GET', null,'text/plain')[2]));
+            Add.createBox(name, country);
         });
     },
 

@@ -289,6 +289,8 @@ Paginator = {
         
         let target = parseInt(event.target.text);
 
+        //console.log('mudou');
+
         Paginator.page.pageElement = event.target;
         Paginator.page.pageNumber = target-1;
         Paginator.page.parent = Util.parent(event.target,'tbody');
@@ -296,6 +298,10 @@ Paginator = {
         if(isNaN(target))
             return new Error();
         else {
+            //console.log('chamando request');
+
+            //console.log(Paginator.request);
+
             Paginator.request();
         }
     },

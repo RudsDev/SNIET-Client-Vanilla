@@ -3,28 +3,20 @@ class EspecieController{
 
     constructor() {
 
-        let $ = document.querySelector.bind(document);
+        
         
         this._resourceUrl = 'http://localhost:8282/sniet_api/servlet/resource/';
 
         this._especieView = new EspecieView();
 
-        this._cientificName = $('#name');
-        this._extinction = $('#extinct');
-        this._description = $('#description');
-        this._smallSize = $('#small_size');
-        this._midSize = $('#mid_size');
-        this._bigSize = $('#big_size');
-        this._puppySize = $('#puppy_size');
-
-        this._selectDorso = $('#dorso-select');
-        this._selectFocinho = $('#focinho-select');
-        this._selectVentre = $('#ventre-select');
-        this._selectReprod = $('#reproducao-select');
-        this._selectBarbatana = $('#barbatana-select');
-        this._selectDenticao = $('#denticao-select');
-
         this.load();
+    }
+
+    add(){
+
+        //console.log(document.querySelector('#select-table-dorso caption.info span.selected-value'));   
+
+       console.log(this._createEspecie()); 
     }
 
     remove(){
@@ -36,17 +28,40 @@ class EspecieController{
     }
 
     _createEspecie(){
-        return new Especie(undefined, this._cientificName.value,
-        this._description.value, this._smallSize.value, 
-        this._midSize.value, this._bigSize.value,
-        this._puppySize.value, this._extinction.value);
+
+        let $ = document.querySelector.bind(document);
+        
+        let cientificName = $('#name');
+        let extinction = $('#extinct');
+        let description = $('#description');
+        let smallSize = $('#small_size');
+        let midSize = $('#mid_size');
+        let bigSize = $('#big_size');
+        let puppySize = $('#puppy_size');
+
+        let selectDorso = $('#select-table-dorso caption.info span.selected-value');
+        let selectFocinho = $('#focinho-select');
+        let selectVentre = $('#ventre-select');
+        let selectReprod = $('#reproducao-select');
+        let selectBarbatana = $('#barbatana-select');
+        let selectDenticao = $('#denticao-select');
+
+        //return selectDorso;
+
+        return new Especie(undefined, cientificName.value,
+        description.value, smallSize.value, 
+        midSize.value, bigSize.value,
+        puppySize.value, extinction.value, 
+        selectBarbatana.innerText, selectDenticao.innerText, selectDorso.innerText,
+        selectFocinho.innerText, selectReprod.innerText, selectVentre.innerText, undefined); 
+
     }
 
 
     load(){
         //this._especieView.loadTables(['dorso', 'focinho', 'reproducao', 'barbatana', 'denticao', 'ventre']);
 
-        this._especieView.loadTables(['dorso']);
+        this._especieView.loadTables(['dorso', 'focinho', 'reproducao', 'barbatana', 'denticao', 'ventre']);
     }
 
 }

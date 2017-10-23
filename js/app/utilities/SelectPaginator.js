@@ -19,10 +19,11 @@ class SelectPaginator {
 
         this._createSelectPaginator(this._rqInf.itemName,container);
         this._createTrs(document.querySelector(`#${this._rqInf.itemName.toLowerCase()}-select-lista`),firstTrs);
+
+        //  let box =  this._pagesRequest(this._rqInf.itemName,this._rqInf.totalItens, 0, this._rqInf.rowsPerPage, this._createTrs);
+
+        //Paginator.request = this._request
         
-        Paginator.request = this._request
-        
-        this._pagesRequest(()=>document.querySelectorAll(`#select-table-${this._rqInf.itemName.toLocaleLowerCase()} tr:not(.tr-paginator)`), this._rqInf.itemName,this._rqInf.totalItens, 0, this._rqInf.rowsPerPage, this._createTrs);
         this._effects();
     }
 
@@ -56,7 +57,7 @@ class SelectPaginator {
      * @param {HTMLTableElement} tbody - Tag <tbody> .
      * @param {Array} list - Array contendo JSON utilizado para popular as <tr>.
      */
-    _createTrs(tbody, list = new Array()){
+    _createTrs(tbody, list = new Array(), box){
 
         Util.appendHtml(tbody, 
                 list.map(item=>{
@@ -68,7 +69,9 @@ class SelectPaginator {
                             <td class="item-value disable-select">${item[Object.keys(item)[1]]}</td>
                         </tr> `
                 }),'tbody');
-            
+
+
+        this._insertPaginator(document.querySelector(`#${this._rqInf.itemName.toLowerCase()}-select-lista`), this._rqInf.itemName);    
         this._selectItem();
     }
 
@@ -82,9 +85,9 @@ class SelectPaginator {
      * @param {integer} page - Número da página a ser exibida.
      * @param {integer} rowsPerPage - Quantidade de <tr> por página.
      */
-    _pagesRequest(trs, itemName,totalItens,page,rowsPerPage, callBack){
-        let box = Paginator.init({
-            get_rows: trs,
+    _pagesRequest(itemName,totalItens,page,rowsPerPage, callBack){
+        return Paginator.init({
+            get_rows: ()=>document.querySelectorAll(`#select-table-${this._rqInf.itemName.toLocaleLowerCase()} tr:not(.tr-paginator)`),
             table: document.querySelector(`#select-table-${itemName.toLocaleLowerCase()}`)[0],
             rows_per_page: rowsPerPage,
             page: page,
@@ -95,19 +98,20 @@ class SelectPaginator {
             function_request: callBack
         });
 
-        let trPaginator = `<tr class="tr-paginator"></tr>`;
+        /*let trPaginator = `<tr class="tr-paginator"></tr>`;
         let tbody = document.querySelector(`#${itemName.toLocaleLowerCase()}-select-lista`);
 
         box.className = "box";
         Util.appendHtml(tbody, trPaginator, 'tbody');
 
-        
-
         document.querySelector('.tr-paginator').appendChild(box);
-        this._loadNextPage();
+        this._loadNextPage();*/
     }
 
     _request(page){
+        
+        console.log('_request');
+
         let resourceUrl = this._resourceUrl;
         let itemName = this._itemName;    
         let maxResults = this._rowsPerPage;
@@ -119,8 +123,13 @@ class SelectPaginator {
 
     _loadNextPage(){
         Paginator.request = ()=>{
-            if(!this._trsExists())
-            this._createTrs(Paginator.page.parent, this._request(Paginator.page.pageNumber));
+
+            console.log(this._trsExists());
+
+            if(!this._trsExists()){
+                this._createTrs(Paginator.page.parent, this._request(Paginator.page.pageNumber));
+            }
+            
             this._insertPaginator(Paginator.page.parent);
         };
     }
@@ -157,7 +166,11 @@ class SelectPaginator {
     /**
      * Assegura que a <tr> com a paginação será sempre a ultima da listagem.
      */
-    _insertPaginator(tbody){
+    _insertPaginator(tbody, itemName, box){
+
+        //console.log('_insertPaginator');
+
+        console.log(tbody);
 
         let trs = tbody.querySelectorAll('tr');
         let paginator = undefined;
@@ -166,10 +179,25 @@ class SelectPaginator {
             if(trs[index].classList.value=='tr-paginator'){
                 paginator = trs[index];
                 trs[index].remove();
+                tbody.appendChild(paginator);
                 break;
             }
         }
-        tbody.appendChild(paginator);
+
+        if(!paginator){
+            
+            console.log('sem paginação');
+
+            let trPaginator = `<tr class="tr-paginator"></tr>`;
+            let tbody = document.querySelector(`#${itemName.toLocaleLowerCase()}-select-lista`);
+
+            Util.appendHtml(tbody, trPaginator, 'tbody');
+    
+            document.querySelector('.tr-paginator').appendChild(this._pagesRequest(this._rqInf.itemName,this._rqInf.totalItens, Paginator.page.pageNumber, this._rqInf.rowsPerPage, this._createTrs));
+            this._loadNextPage();
+
+        }
+        
     }
 
     _selectItem(){

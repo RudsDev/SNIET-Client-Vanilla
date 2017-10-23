@@ -11,7 +11,7 @@
 
 <h2>Espécie</h2>
 
-	<form action="" method="get" onsubmit="especieController.add(event)">
+	<form action="" method="get">
     
     Nome Cientifico: <input type="text" id="name"/><br/><br/>
 
@@ -73,7 +73,7 @@
 
 	  <br/>
 
-    <input type="submit" id="command" value="Salvar">
+    <input type="button" id="command" value="Salvar" onclick="especieController.add(event)">
 
     <input type="button" id="btn-delete" value="Apagar">
 
