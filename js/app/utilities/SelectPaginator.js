@@ -23,7 +23,8 @@ class SelectPaginator {
         //  let box =  this._pagesRequest(this._rqInf.itemName,this._rqInf.totalItens, 0, this._rqInf.rowsPerPage, this._createTrs);
 
         //Paginator.request = this._request
-        
+
+        this._insertPaginator(document.querySelector(`#${this._rqInf.itemName.toLowerCase()}-select-lista`), this._rqInf.itemName);
         this._effects();
     }
 
@@ -71,7 +72,7 @@ class SelectPaginator {
                 }),'tbody');
 
 
-        this._insertPaginator(document.querySelector(`#${this._rqInf.itemName.toLowerCase()}-select-lista`), this._rqInf.itemName);    
+        // this._insertPaginator(document.querySelector(`#${this._rqInf.itemName.toLowerCase()}-select-lista`), this._rqInf.itemName);    
         this._selectItem();
     }
 
@@ -130,7 +131,7 @@ class SelectPaginator {
                 this._createTrs(Paginator.page.parent, this._request(Paginator.page.pageNumber));
             }
             
-            this._insertPaginator(Paginator.page.parent);
+            //this._insertPaginator(Paginator.page.parent);
         };
     }
 
@@ -166,28 +167,47 @@ class SelectPaginator {
     /**
      * Assegura que a <tr> com a paginação será sempre a ultima da listagem.
      */
-    _insertPaginator(tbody, itemName, box){
+    _insertPaginator(tbody, itemName){
 
         //console.log('_insertPaginator');
 
-        console.log(tbody);
+        let tbodys = document.querySelectorAll('tbody.body-table-selecet');
+        let tdby = /*document.querySelector(`#${itemName}-select-lista`)*/tbody;
+        let trs = tdby.querySelectorAll('tr')[0];
+        let paginator = tdby.querySelector('tr.tr-paginator');
 
-        let trs = tbody.querySelectorAll('tr');
-        let paginator = undefined;
+        console.log(tbodys);
+        console.log('--------------');
 
-        for (var index = 0; index < trs.length; index++) {
+        for (var index = 0; index < tbodys.length; index++){
+            //console.log(tbodys[index]);
+        }
+
+        for (var index = 0; index < trs.length; index++){
+            
+            //console.log(trs[index].parentNode);
+
+            if(paginator){
+                
+            }
+            else{
+
+            }
+        }
+        
+
+        /*for (var index = 0; index < trs.length; index++) {
+            console.log(trs[index].classList);
             if(trs[index].classList.value=='tr-paginator'){
                 paginator = trs[index];
                 trs[index].remove();
-                tbody.appendChild(paginator);
+                tdby.appendChild(paginator);
                 break;
             }
         }
 
         if(!paginator){
-            
-            console.log('sem paginação');
-
+        
             let trPaginator = `<tr class="tr-paginator"></tr>`;
             let tbody = document.querySelector(`#${itemName.toLocaleLowerCase()}-select-lista`);
 
@@ -196,7 +216,7 @@ class SelectPaginator {
             document.querySelector('.tr-paginator').appendChild(this._pagesRequest(this._rqInf.itemName,this._rqInf.totalItens, Paginator.page.pageNumber, this._rqInf.rowsPerPage, this._createTrs));
             this._loadNextPage();
 
-        }
+        }*/
         
     }
 

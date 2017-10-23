@@ -22,6 +22,8 @@ class EspecieView{
     
             let list = JSON.parse(Conn.conect(`${requestInfos.resourceUri}/${requestInfos.itemName}/${requestInfos.rowsPerPage}/${requestInfos.page}`,'GET', null,'text/plain')[2]);
     
+            console.log(element)
+
             new SelectPaginator(document.querySelector(`#${type}-select-div`), list, requestInfos);
 
         }, this);
