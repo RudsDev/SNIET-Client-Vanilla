@@ -13,18 +13,20 @@ class SelectPaginator {
      * @param {integer} requestInfos.totalItens - Obrigatório. Total de elementos que estarão presentes no select-paginator.
      * @param {Array} requestInfos.pathModel - Obrigatório. Array com strings ordenadas de modo a reproduzir o path do resource que preenche as trs.
      */
-    constructor(container, firstTrs, requestInfos){
+    constructor(requestInfos){
 
-        this._rqInf = requestInfos;
+        Paginator.request = this._request;
 
-        this._createSelectPaginator(this._rqInf.itemName,container);
-        this._createTrs(document.querySelector(`#${this._rqInf.itemName.toLowerCase()}-select-lista`),firstTrs);
+        this._rqInfs = requestInfos;
 
-        //  let box =  this._pagesRequest(this._rqInf.itemName,this._rqInf.totalItens, 0, this._rqInf.rowsPerPage, this._createTrs);
+        //Foreach que apenas criará todas os select-paginator.   
+        this._rqInfs.forEach(function(element) {
+            this._createSelectPaginator(element.itemName,element.container); 
+            let tbody = document.querySelector(`tbody#${element.itemName.toLowerCase()}-select-lista`);
+            this._createTrs(tbody, element.callBack());
+            this._insertPaginator(tbody);
+        }, this);
 
-        //Paginator.request = this._request
-
-        this._insertPaginator(document.querySelector(`#${this._rqInf.itemName.toLowerCase()}-select-lista`), this._rqInf.itemName);
         this._effects();
     }
 
@@ -38,7 +40,7 @@ class SelectPaginator {
         let itemNameFirstUpper = itemName.replace(itemName.charAt(0),itemName.charAt(0).toUpperCase());
         Util.appendHtml(container, 
             `<span>${itemNameFirstUpper}:</span>  
-            <table id="select-table-${itemName.toLocaleLowerCase()}" class="select-table table table-bordered">
+            <table id="select-table-${itemName.toLocaleLowerCase()}" class="select-table table table-bordered" data-item="${itemName}">
                 <caption class="info">
                     <span class="selected-value">${itemNameFirstUpper}</span>
                     <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
@@ -49,8 +51,6 @@ class SelectPaginator {
         )
     }
 
-
-
     /**
      * Cria as <tr> do select-paginator.
      * Customize para exibir os dados desejados.
@@ -58,25 +58,21 @@ class SelectPaginator {
      * @param {HTMLTableElement} tbody - Tag <tbody> .
      * @param {Array} list - Array contendo JSON utilizado para popular as <tr>.
      */
-    _createTrs(tbody, list = new Array(), box){
+    _createTrs(tbody, list = new Array()){
 
         Util.appendHtml(tbody, 
                 list.map(item=>{
                     return `
                         <tr>
                             <td class="select-item">
-                                <input type="radio" name="selected-item" value="${item[Object.keys(item)[0]]}">
+                                <input type="radio" class="item-id" name="selected-item" value="${item[Object.keys(item)[0]]}">
                             </td>
                             <td class="item-value disable-select">${item[Object.keys(item)[1]]}</td>
                         </tr> `
                 }),'tbody');
 
-
-        // this._insertPaginator(document.querySelector(`#${this._rqInf.itemName.toLowerCase()}-select-lista`), this._rqInf.itemName);    
         this._selectItem();
     }
-
-
 
     /**
      * Cria a paginação do select-paginator.
@@ -86,138 +82,93 @@ class SelectPaginator {
      * @param {integer} page - Número da página a ser exibida.
      * @param {integer} rowsPerPage - Quantidade de <tr> por página.
      */
-    _pagesRequest(itemName,totalItens,page,rowsPerPage, callBack){
+    _createPaginator(rqInfo){
+
         return Paginator.init({
-            get_rows: ()=>document.querySelectorAll(`#select-table-${this._rqInf.itemName.toLocaleLowerCase()} tr:not(.tr-paginator)`),
-            table: document.querySelector(`#select-table-${itemName.toLocaleLowerCase()}`)[0],
-            rows_per_page: rowsPerPage,
-            page: page,
+            get_rows: ()=>document.querySelectorAll(`#select-table-${rqInfo.itemName.toLocaleLowerCase()} tr:not(.tr-paginator)`),
+            table: document.querySelector(`#select-table-${rqInfo.itemName}`)[0],
+            rows_per_page: rqInfo.rowsPerPage,
+            page: rqInfo.page,
             box_mode: "list",
             page_options : false,
             span_infos: false,
-            total_items: totalItens,
-            function_request: callBack
+            total_items: rqInfo.totalItens,
+            function_request: rqInfo.callBack,
         });
-
-        /*let trPaginator = `<tr class="tr-paginator"></tr>`;
-        let tbody = document.querySelector(`#${itemName.toLocaleLowerCase()}-select-lista`);
-
-        box.className = "box";
-        Util.appendHtml(tbody, trPaginator, 'tbody');
-
-        document.querySelector('.tr-paginator').appendChild(box);
-        this._loadNextPage();*/
     }
 
-    _request(page){
-        
-        console.log('_request');
+    /**
+     * Assegura que a <tr> com a paginação será sempre a ultima da listagem.
+     */
+    _insertPaginator(tbody){
 
-        let resourceUrl = this._resourceUrl;
-        let itemName = this._itemName;    
-        let maxResults = this._rowsPerPage;
-        let firstResults = page;
-        let uri = this._mountURI();
+        let tdby = tbody;
+        let trs = tdby.querySelectorAll('tr');
+        let paginator = tdby.querySelector('tr.tr-paginator');
 
+        if(paginator==null){
+
+            let element = this._getInfos(tbody.parentNode.dataset['item']);
+            let trPaginator = `<tr class="tr-paginator"></tr>`;
+
+            Util.appendHtml(tdby, trPaginator, 'tbody');
+            tdby.querySelector('.tr-paginator').appendChild(this._createPaginator(element));
+
+            this._loadNextPage(element, this);
+        }
+        else{
+            for (var index = 0; index < trs.length; index++) {
+                if(trs[index].classList.value=='tr-paginator'){
+                    paginator = trs[index];
+                    trs[index].remove();
+                    tdby.appendChild(paginator);
+                    break;
+                }
+            }
+        }
+    }
+
+    _request(element, page){
+        let uri = this._mountURI(element);
         return JSON.parse(Conn.conect(uri,'GET', null,'text/plain')[2]);
     }
 
-    _loadNextPage(){
-        Paginator.request = ()=>{
-
-            console.log(this._trsExists());
-
-            if(!this._trsExists()){
-                this._createTrs(Paginator.page.parent, this._request(Paginator.page.pageNumber));
+    _loadNextPage(elemento, context){
+        Paginator.request = function(){
+            if(!context._trsExists(context._getInfos(Paginator.page.parent.parentNode.dataset['item']))){
+                let element = context._getInfos(Paginator.page.parent.parentNode.dataset['item']);
+                let list = context._request(element, Paginator.page.pageNumber);
+                context._createTrs(document.querySelector(`tbody#${element.itemName.toLowerCase()}-select-lista`), list);
+                context._insertPaginator(Paginator.page.parent);
             }
-            
-            //this._insertPaginator(Paginator.page.parent);
         };
     }
 
     /**
      * Monta a URI de acordo com o que foi definido através do parâmetro 'requestInfos.pathModel' no construtor.
      */
-    _mountURI(){
-
-        this._rqInf.page = Paginator.page.pageNumber;
+    _mountURI(element){
+        
+        element.page = Paginator.page.pageNumber;
         let path = [];
 
-        for (let key in this._rqInf) {
-            for(let value of this._rqInf.pathModel){
+        for (let key in element) {
+            for(let value of element.pathModel){
                 if(key.search(value)===0){
-                    path.push(this._rqInf[key]);
+                    path.push(element[key]);
                 }    
             }
         }
-        return this._rqInf.resourceUri+'/'+path.join('/');
+        return element.resourceUri+'/'+path.join('/');
     }
-
 
     /**
      * Verifica se todas as <tr> possiveis já foram renderizadas no selectPaginator.
      */
-    _trsExists(){
-        let select = Paginator.page.parent;
+    _trsExists(element){
+        let select = Paginator.page.parent.parentNode;
         let qtdTrs = select.querySelectorAll('tr').length-1;
-        return qtdTrs>=this._rqInf.totalItens;
-    }
-
-
-    /**
-     * Assegura que a <tr> com a paginação será sempre a ultima da listagem.
-     */
-    _insertPaginator(tbody, itemName){
-
-        //console.log('_insertPaginator');
-
-        let tbodys = document.querySelectorAll('tbody.body-table-selecet');
-        let tdby = /*document.querySelector(`#${itemName}-select-lista`)*/tbody;
-        let trs = tdby.querySelectorAll('tr')[0];
-        let paginator = tdby.querySelector('tr.tr-paginator');
-
-        console.log(tbodys);
-        console.log('--------------');
-
-        for (var index = 0; index < tbodys.length; index++){
-            //console.log(tbodys[index]);
-        }
-
-        for (var index = 0; index < trs.length; index++){
-            
-            //console.log(trs[index].parentNode);
-
-            if(paginator){
-                
-            }
-            else{
-
-            }
-        }
-        
-
-        /*for (var index = 0; index < trs.length; index++) {
-            console.log(trs[index].classList);
-            if(trs[index].classList.value=='tr-paginator'){
-                paginator = trs[index];
-                trs[index].remove();
-                tdby.appendChild(paginator);
-                break;
-            }
-        }
-
-        if(!paginator){
-        
-            let trPaginator = `<tr class="tr-paginator"></tr>`;
-            let tbody = document.querySelector(`#${itemName.toLocaleLowerCase()}-select-lista`);
-
-            Util.appendHtml(tbody, trPaginator, 'tbody');
-    
-            document.querySelector('.tr-paginator').appendChild(this._pagesRequest(this._rqInf.itemName,this._rqInf.totalItens, Paginator.page.pageNumber, this._rqInf.rowsPerPage, this._createTrs));
-            this._loadNextPage();
-
-        }*/
-        
+        return qtdTrs>=element.totalItens;
     }
 
     _selectItem(){
@@ -233,7 +184,6 @@ class SelectPaginator {
             
         }
     }
-
 
     _selectItemAction(event){
 
@@ -267,6 +217,18 @@ class SelectPaginator {
         let element = event.target;
         let tbody = element.parentNode.parentNode.querySelector('tbody');
         tbody.classList.toggle('invisible');
+    }
+
+    _getInfos(itemName){
+
+        let infos = undefined;
+
+         this._rqInfs.forEach(function(element) {
+             if(element.itemName==itemName){
+                 infos = element;
+             }
+         }, this);
+         return infos;
     }
     
 }

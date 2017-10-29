@@ -2,31 +2,32 @@ class EspecieView{
     
     constructor(element){
         this._resourceUrl = 'http://localhost:8282/sniet_api/servlet/resource';
+        this._requestInfos = new Array();
     }
 
     loadTables(modelsNames){
 
         modelsNames.forEach(function(element) {
             
-            let type = element.toLowerCase();
-            let totalItens = Conn.conect(this._resourceUrl+'/qtd/'+type,'GET', null,'text/plain')[2];            
-            
-            let requestInfos ={
-                itemName: type,
+            let rqInfo = {
+                itemName: element,
                 resourceUri: this._resourceUrl,
                 rowsPerPage: 3,
-                totalItens: totalItens,
+                totalItens: Conn.conect(this._resourceUrl+'/qtd/'+element,'GET', null,'text/plain')[2],
                 page:0,
                 pathModel: ['itemName','rowsPerPage','page'],
+                container: document.querySelector(`#${element.toLowerCase()}-select-div`),
+                callBack: ()=>{return JSON.parse(Conn.conect(`${rqInfo.resourceUri}/${rqInfo.itemName}/${rqInfo.rowsPerPage}/${rqInfo.page}`,'GET', null,'text/plain')[2]);},
             }
-    
-            let list = JSON.parse(Conn.conect(`${requestInfos.resourceUri}/${requestInfos.itemName}/${requestInfos.rowsPerPage}/${requestInfos.page}`,'GET', null,'text/plain')[2]);
-    
-            console.log(element)
 
-            new SelectPaginator(document.querySelector(`#${type}-select-div`), list, requestInfos);
+            this._requestInfos.push(rqInfo);
+        
+        }, this);            
 
-        }, this);
+
+        new SelectPaginator(this._requestInfos);
+
+        
 
     }
 }
