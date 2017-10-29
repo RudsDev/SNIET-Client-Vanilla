@@ -57,7 +57,7 @@ Add = {
     },
 
 
-    generateJSON : function () {
+    generateJSONButton : function () {
 
         let btnGen = document.querySelector('#gen-json-pop');
 
@@ -79,6 +79,22 @@ Add = {
             return jsonNames;
         });
     },
+
+    generateJSON : function(){
+        
+        let boxNames = Array.from(document.querySelectorAll('.box-name'));
+
+        let objNames =  boxNames.map((box)=>{
+            return {
+                popularName: box.querySelector('span.pop-name').textContent,
+                country: box.querySelector('.pop-name-country').value
+            }
+        });
+
+        let jsonNames = JSON.stringify(objNames);
+
+        return jsonNames;
+     },
 
 
     _clearPopField : function () {
