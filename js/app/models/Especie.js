@@ -19,7 +19,7 @@ class Especie {
         this._focinho = focinho;
         this._reproducao = reproducao;
         this._ventre = ventre;
-        this.nomesPopulares = nomesPopulares;
+        this._nomesPopulares = nomesPopulares;
     }
 
 
