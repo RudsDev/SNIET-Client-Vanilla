@@ -285,11 +285,10 @@ Paginator = {
         element.addEventListener('click', myFunction);          
     },
 
+    /*Escuta as mudanças de páginas. */
     _paginationListener: function(){
         
         let target = parseInt(event.target.text);
-
-        //console.log('mudou');
 
         Paginator.page.pageElement = event.target;
         Paginator.page.pageNumber = target-1;
@@ -298,10 +297,6 @@ Paginator = {
         if(isNaN(target))
             return new Error();
         else {
-            //console.log('chamando request');
-
-            //console.log(Paginator.request);
-
             Paginator.request();
         }
     },
