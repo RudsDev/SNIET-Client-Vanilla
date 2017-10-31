@@ -67,6 +67,7 @@ Add = {
 
             let objNames =  boxNames.map((box)=>{
                 return {
+                    idNome: null,
                     popularName: box.querySelector('span.pop-name').textContent,
                     country: box.querySelector('.pop-name-country').value
                 }
@@ -86,7 +87,8 @@ Add = {
 
         let objNames =  boxNames.map((box)=>{
             return {
-                popularName: box.querySelector('span.pop-name').textContent,
+                idNome: null,
+                nomePopular: box.querySelector('span.pop-name').textContent,
                 country: box.querySelector('.pop-name-country').value
             }
         });
