@@ -39,37 +39,63 @@ class EspecieController{
 
         let selectDorsoValue = $('#select-table-dorso caption.info span.selected-value');
         let selectDorsoID = $('#select-table-dorso input[name=selected-item]:checked');
-        let dorso = {};
+        let dorso = {
+            "idDorso": selectDorsoID,
+            "descCorDorso": selectDorsoValue
+        };
 
         let selectFocinhoValue = $('#select-table-focinho caption.info span.selected-value');
         let selectFocinhoID = $('#select-table-focinho input[name=selected-item]:checked');
-        let focinho = {};        
+        let focinho = {
+            "idFocinho": selectFocinhoID,
+            "tipoFocinho": null,
+            "descFocinho": selectFocinhoValue
+        };        
 
         let selectVentreValue = $('#select-table-ventre caption.info span.selected-value');
         let selectVentreID = $('#select-table-ventre input[name=selected-item]:checked');
-        let ventre = {};
+        let ventre = {
+            "codVentre": selectVentreID,
+            "descCorVentre": selectVentreValue
+        };
 
         let selectReprodValue = $('#select-table-reproducao caption.info span.selected-value');
         let selectReprodID = $('#select-table-reproducao input[name=selected-item]:checked');
-        let reproducao = {};
+        let reproducao = {
+            "idReproducao": selectReprodID,
+            "tipoReproducao": selectReprodValue
+        };
 
         let selectBarbatanaValue = $('#select-table-barbatana caption.info span.selected-value');
         let selectBarbatanaID = $('#select-table-barbatana input[name=selected-item]:checked');
-        let barbatana = {};
+        let barbatana = {
+            "idBarbatana": selectBarbatanaID,
+            "descCorBarbatana": selectBarbatanaValue
+        };
 
         let selectDenticaoValue = $('#select-table-denticao caption.info span.selected-value');
         let selectDenticaoID = $('#select-table-denticao input[name=selected-item]:checked');
-        let denticao = {};
+        let denticao = {
+            "idDenticao": selectDenticaoID,
+            "caracDenticao": selectDenticaoValue
+        };
+
+        let selectFamiliaValue = $('');
+        let selectFamiliaID = $('');
+        let familia = {
+            "idFamilia": selectFamiliaID,
+            "descFamilia": selectFamiliaValue,
+        };
         
         let nomesPopulares = Add.generateJSON();
 
-        // return new Especie(undefined, cientificName.value,
-        // description.value, smallSize.value, 
-        // midSize.value, bigSize.value,
-        // puppySize.value, extinction.value, 
-        // selectBarbatana.innerText, selectDenticao.innerText, selectDorso.innerText,
-        // selectFocinho.innerText, selectReprod.innerText, selectVentre.innerText,
-        // JSON.parse(nomesPopulares)); 
+        return new Especie(undefined, cientificName.value,
+        description.value, smallSize.value, 
+        midSize.value, bigSize.value,
+        puppySize.value, extinction.value, 
+        selectBarbatana.innerText, selectDenticao.innerText, selectDorso.innerText,
+        selectFocinho.innerText, selectReprod.innerText, selectVentre.innerText,
+        JSON.parse(nomesPopulares)); 
 
     }
 
