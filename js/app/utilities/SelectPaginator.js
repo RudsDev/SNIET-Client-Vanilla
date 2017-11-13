@@ -23,7 +23,7 @@ class SelectPaginator {
         this._rqInfs.forEach(function(element) {
             this._createSelectPaginator(element.itemName,element.container); 
             let tbody = document.querySelector(`tbody#${element.itemName.toLowerCase()}-select-lista`);
-            this._createTrs(tbody, element.callBack());
+            this._createTrs(element.itemName, tbody, element.callBack());
             this._insertPaginator(tbody);
         }, this);
 
@@ -58,14 +58,14 @@ class SelectPaginator {
      * @param {HTMLTableElement} tbody - Tag <tbody> .
      * @param {Array} list - Array contendo JSON utilizado para popular as <tr>.
      */
-    _createTrs(tbody, list = new Array()){
+    _createTrs(itemName, tbody, list = new Array()){
 
         Util.appendHtml(tbody, 
                 list.map(item=>{
                     return `
                         <tr>
                             <td class="select-item">
-                                <input type="radio" class="item-id" name="selected-item" value="${item[Object.keys(item)[0]]}">
+                                <input type="radio" class="item-id" name="selected-item-${itemName}" value="${item[Object.keys(item)[0]]}">
                             </td>
                             <td class="item-value disable-select">${item[Object.keys(item)[1]]}</td>
                         </tr> `
@@ -138,7 +138,7 @@ class SelectPaginator {
             if(!context._trsExists(context._getInfos(Paginator.page.parent.parentNode.dataset['item']))){
                 let element = context._getInfos(Paginator.page.parent.parentNode.dataset['item']);
                 let list = context._request(element, Paginator.page.pageNumber);
-                context._createTrs(document.querySelector(`tbody#${element.itemName.toLowerCase()}-select-lista`), list);
+                context._createTrs(elemento,document.querySelector(`tbody#${element.itemName.toLowerCase()}-select-lista`), list);
                 context._insertPaginator(Paginator.page.parent);
             }
         };
@@ -192,7 +192,7 @@ class SelectPaginator {
         let table = trSelected.parentNode.parentNode;
         let caption = table.querySelector('caption span.selected-value');
         let seta = table.querySelector('caption span.glyphicon');
-        let radio = trSelected.querySelector('input[name=selected-item]');
+        let radio = trSelected.querySelector('.item-id');
 
         //recolhe o menu de seleção ao se escolher um item.
         seta.click();
