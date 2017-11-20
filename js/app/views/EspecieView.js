@@ -1,7 +1,7 @@
 class EspecieView{
     
     constructor(element){
-        this._resourceUrl = 'http://localhost:8282/sniet_api/servlet/resource';
+        this._resourceUrl = 'http://localhost:8282/sniet/app/resource';
         this._requestInfos = new Array();
     }
 

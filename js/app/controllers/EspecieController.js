@@ -5,7 +5,7 @@ class EspecieController{
 
         
         
-        this._resourceUrl = 'http://localhost:8282/sniet_api/servlet/';
+        this._resourceUrl = 'http://localhost:8282/sniet/app';
 
         this._especieView = new EspecieView();
 
@@ -120,7 +120,7 @@ class EspecieController{
 
 
     load(){
-        this._especieView.loadTables(['dorso', 'focinho', 'reproducao', 'barbatana', 'denticao', 'ventre', 'familia']);
+    this._especieView.loadTables(['dorso'/*, 'focinho', 'reproducao', 'barbatana', 'denticao', 'ventre', 'familia'*/]);
     }
 
 }
