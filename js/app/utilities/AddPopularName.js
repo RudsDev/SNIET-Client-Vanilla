@@ -3,7 +3,7 @@ Add = {
     init:function(){
 
         let btnAdd = document.querySelector('#add-popular-name');
-        this._resourceUrl = 'http://localhost:8282/sniet_api/servlet/resource/';
+        this._resourceUrl = 'http://localhost:8282/sniet/app/resource/';
 
         Add.addNome();
         Add.generateJSON();
